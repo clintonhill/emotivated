@@ -23,7 +23,16 @@ const Logo = styled.div`
 `;
 
 const ThemeButton = styled.input`
-  background-image: ${props => openmoji.openmojis.find(el => el.hexcode === props.theme.toggleHex).openmoji_images.color.svg};
+  background-image: url("/stickers/${props => props.theme.toggleHex}.svg");
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: ${props => props.theme.primaryText};
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) => {
