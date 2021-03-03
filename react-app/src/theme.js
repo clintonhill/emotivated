@@ -6,7 +6,7 @@ export const mainTheme = {
 }
 
 export const darkTheme = {
-  accent: '#EDAE49',
+  accent: '#7e530c',
   primaryText:'#EFE9F4',
   backgroundColor: '#242325',
   logoPath: '/images/emotivated.svg',

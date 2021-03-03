@@ -44,7 +44,7 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={ userTheme }>
       <GlobalStyle />
-      <Navbar setAuthenticated={setAuthenticated} userTheme={userTheme} setUserTheme={setUserTheme} />
+      <Navbar authenticated={authenticated} setAuthenticated={setAuthenticated} userTheme={userTheme} setUserTheme={setUserTheme} />
       <Switch>
         <Route path="/login" exact={true}>
           <LoginForm
