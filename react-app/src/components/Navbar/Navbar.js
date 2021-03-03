@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 import styled from 'styled-components'
 import { mainTheme, darkTheme } from '../../theme'
+import openmoji from 'openmoji'
 
 const Container = styled.div`
   background-color:${props => props.theme.accent};
@@ -19,6 +20,19 @@ const Logo = styled.div`
   height: 50px;
   background-position: center;
   background-repeat: no-repeat;
+`;
+
+const ThemeButton = styled.input`
+  background-image: url("/stickers/${props => props.theme.toggleHex}.svg");
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: ${props => props.theme.primaryText};
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) => {
@@ -46,7 +60,7 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
               Sign Up
             </NavLink>
           </>}
-          <button onClick={toggleTheme}>Toggle Theme</button>
+          <ThemeButton type='button' onClick={toggleTheme}/>
           { authenticated && <LogoutButton setAuthenticated={setAuthenticated} /> }
       </Container>
   );

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect } from 'react-router-dom';
 import { signUp } from '../../services/auth';
 import styled from 'styled-components'
-import { FormWrapper, FormRow, Button } from '../Forms/styles'
+import { FormWrapper, FormRow, Button, FormInput, OverflowLabel } from '../Forms/styles'
 
 const MainWrapper = styled.div`
   display: flex;
@@ -60,8 +60,8 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
       </WelcomeMessage>
       <FormWrapper>
         <FormRow>
-          <label>User Name</label>
-          <input
+          <OverflowLabel>User Name</OverflowLabel>
+          <FormInput
             type="text"
             name="username"
             onChange={updateUsername}
@@ -70,8 +70,8 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
         </FormRow>
 
         <FormRow>
-          <label>Email</label>
-          <input
+          <OverflowLabel>Email</OverflowLabel>
+          <FormInput
             type="text"
             name="email"
             onChange={updateEmail}
@@ -80,8 +80,8 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
         </FormRow>
 
         <FormRow>
-          <label>Password</label>
-          <input
+          <OverflowLabel>Password</OverflowLabel>
+          <FormInput
             type="password"
             name="password"
             onChange={updatePassword}
@@ -90,8 +90,8 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
         </FormRow>
 
         <FormRow>
-          <label>Repeat Password</label>
-          <input
+          <OverflowLabel>Repeat Password</OverflowLabel>
+          <FormInput
             type="password"
             name="repeat_password"
             onChange={updateRepeatPassword}
