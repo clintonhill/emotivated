@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { mainTheme } from './theme'
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
 import LoginForm from "./components/auth/LoginForm";
 import SignUpForm from "./components/auth/SignUpForm";
 import Navbar from "./components/Navbar";
@@ -9,9 +11,20 @@ import User from "./components/User";
 import IndexPage from './components/IndexPage'
 import { authenticate } from "./services/auth";
 
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: ${props => props.theme.backgroundColor};
+    color: ${props => props.theme.primaryText };
+    transition: all .5s ease-in;
+  }
+`;
+
+
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [userTheme, setUserTheme] = useState(mainTheme)
 
   useEffect(() => {
     (async() => {
@@ -29,7 +42,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Navbar setAuthenticated={setAuthenticated} />
+      <ThemeProvider theme={ userTheme }>
+      <GlobalStyle />
+      <Navbar setAuthenticated={setAuthenticated} userTheme={userTheme} setUserTheme={setUserTheme} />
       <Switch>
         <Route path="/login" exact={true}>
           <LoginForm
@@ -50,6 +65,7 @@ function App() {
           <IndexPage />
         </ProtectedRoute>
       </Switch>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

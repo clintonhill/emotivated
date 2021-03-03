@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 import styled from 'styled-components'
+import { mainTheme, darkTheme } from '../../theme'
 
 const Container = styled.div`
-  background-color: goldenrod;
+  background-color:${props => props.theme.accent};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,14 +12,24 @@ const Container = styled.div`
 `;
 
 const Logo = styled.div`
-  background-image: url("/images/emotivated.svg");
+  background-image: url("${props => props.theme.logoPath}");
   width: 175px;
   height: 50px;
   background-position: center;
   background-repeat: no-repeat;
 `;
 
-const Navbar = ({ setAuthenticated }) => {
+const Navbar = ({ setAuthenticated, userTheme, setUserTheme }) => {
+
+  const toggleTheme = () => {
+    let newTheme = darkTheme;
+    if(userTheme === darkTheme)
+      newTheme = mainTheme;
+
+    setUserTheme(newTheme);
+
+  }
+
   return (
       <Container>
           <Logo />
@@ -34,6 +45,7 @@ const Navbar = ({ setAuthenticated }) => {
           <NavLink to="/users" exact={true} activeClassName="active">
             Users
           </NavLink>
+          <button onClick={toggleTheme}>Toggle Theme</button>
           <LogoutButton setAuthenticated={setAuthenticated} />
       </Container>
   );
