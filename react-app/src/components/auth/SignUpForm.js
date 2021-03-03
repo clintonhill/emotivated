@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect } from 'react-router-dom';
 import { signUp } from '../../services/auth';
 import styled from 'styled-components'
-import { FormWrapper, FormRow, Button, FormInput } from '../Forms/styles'
+import { FormWrapper, FormRow, Button, FormInput, OverflowLabel } from '../Forms/styles'
 
 const MainWrapper = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
       </WelcomeMessage>
       <FormWrapper>
         <FormRow>
-          <label>User Name</label>
+          <OverflowLabel>User Name</OverflowLabel>
           <FormInput
             type="text"
             name="username"
@@ -70,7 +70,7 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
         </FormRow>
 
         <FormRow>
-          <label>Email</label>
+          <OverflowLabel>Email</OverflowLabel>
           <FormInput
             type="text"
             name="email"
@@ -80,7 +80,7 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
         </FormRow>
 
         <FormRow>
-          <label>Password</label>
+          <OverflowLabel>Password</OverflowLabel>
           <FormInput
             type="password"
             name="password"
@@ -90,7 +90,7 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
         </FormRow>
 
         <FormRow>
-          <label>Repeat Password</label>
+          <OverflowLabel>Repeat Password</OverflowLabel>
           <FormInput
             type="password"
             name="repeat_password"

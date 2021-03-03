@@ -26,11 +26,32 @@ export const FormRow = styled.div`
 `;
 
 export const FormInput = styled.input`
+  width: 50%;
+
+  &:focus {
+    width: 66%;
+    transition: all .25s ease-in;
+  }
   @media (max-width: 700px){
     width: 100%;
+    &:focus {
+      width: 100%;
+    }
   }
 `;
 
 export const Button = styled.button`
   width: 30vw;
+`;
+
+export const OverflowLabel = styled.label`
+text-overflow: ellipsis;
+max-width: 40%;
+width: 40%;
+overflow: hidden;
+white-space: nowrap;
+@media (max-width: 700px){
+  max-width: 100%;
+  width: 100%;
+}
 `;
