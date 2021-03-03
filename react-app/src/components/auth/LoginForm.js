@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { login } from "../../services/auth";
 import styled from 'styled-components'
-import { FormWrapper, FormRow, Button } from '../Forms/styles'
+import { FormWrapper, FormRow, Button, FormInput } from '../Forms/styles'
 
 const MainWrapper = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
       </div>
       <FormRow>
         <label htmlFor="email">Email</label>
-        <input
+        <FormInput
           name="email"
           type="text"
           placeholder="Email"
@@ -67,7 +67,7 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
       </FormRow>
       <FormRow>
         <label htmlFor="password">Password</label>
-        <input
+        <FormInput
           name="password"
           type="password"
           placeholder="Password"
