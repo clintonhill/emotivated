@@ -4,7 +4,13 @@ import styled from 'styled-components'
 import { mainTheme, darkTheme } from '../../theme'
 import openmoji from 'openmoji'
 
-const Container = styled.div`
+const NavWrapper = styled.div`
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const TopContainer = styled.div`
   background-color:${props => props.theme.accent};
   border-radius: 5px;
   transition: background-color .5s ease-in;
@@ -12,6 +18,17 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 5px;
+  width: 100%;
+`;
+
+const BottomContainer = styled.div`
+  background-color: hsla(36.951219512195124, 82%, 60.7843137254902%, 0.781);
+  width: 85%;
+  height: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 0 0 5px 5px;
 `;
 
 const Logo = styled.div`
@@ -47,22 +64,26 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
   }
 
   return (
-      <Container>
+    <NavWrapper>
+      <TopContainer>
           <Logo />
-          <NavLink to="/" exact={true} activeClassName="active">
+          <ThemeButton type='button' onClick={toggleTheme}/>
+      </TopContainer>
+      <BottomContainer>
+          <NavLink className='tab' exact to="/" activeClassName='active'>
             Home
           </NavLink>
           { !authenticated && <>
-            <NavLink to="/login" exact={true} activeClassName="active">
+            <NavLink className='tab' to="/login" activeClassName='active'>
               Login
             </NavLink>
-            <NavLink to="/sign-up" exact={true} activeClassName="active">
-              Sign Up
+            <NavLink className='tab' to="/sign-up" activeClassName='active'>
+              Sign up
             </NavLink>
           </>}
           { authenticated && <LogoutButton setAuthenticated={setAuthenticated} /> }
-          <ThemeButton type='button' onClick={toggleTheme}/>
-      </Container>
+          </BottomContainer>
+          </NavWrapper>
   );
 }
 
