@@ -60,8 +60,8 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
               Sign Up
             </NavLink>
           </>}
-          <ThemeButton type='button' onClick={toggleTheme}/>
           { authenticated && <LogoutButton setAuthenticated={setAuthenticated} /> }
+          <ThemeButton type='button' onClick={toggleTheme}/>
       </Container>
   );
 }
