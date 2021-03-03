@@ -18,6 +18,22 @@ const GlobalStyle = createGlobalStyle`
     color: ${props => props.theme.primaryText };
     transition: all .5s ease-in;
   }
+  .active {
+    background-color: ${props => props.theme.accent};
+    font-weight: bold;
+    box-shadow: 5px 5px 5px gray;
+  }
+
+  .tab {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 0 0 5px 5px;
+    text-decoration: none;
+    color: ${props => props.theme.primaryText};
+    padding-top: 4px;
+  }
 `;
 
 
@@ -61,9 +77,9 @@ function App() {
         <ProtectedRoute path="/users/:userId" exact={true} authenticated={authenticated}>
           <User />
         </ProtectedRoute>
-        <ProtectedRoute path="/" exact={true} authenticated={authenticated}>
+        <Route path="/" exact={true} authenticated={authenticated}>
           <IndexPage />
-        </ProtectedRoute>
+        </Route>
       </Switch>
       </ThemeProvider>
     </BrowserRouter>
