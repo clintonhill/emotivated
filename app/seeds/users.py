@@ -1,11 +1,13 @@
 from werkzeug.security import generate_password_hash
 from app.models import db, User
+from datetime import datetime
 
 # Adds a demo user, you can add other users here if you want
 def seed_users():
 
     demo = User(username='Demo', email='demo@aa.io',
-                password='password')
+                password='password', joined_date=datetime.now(), kudos=1,
+                last_active=datetime.now(), sticker_id=1)
 
     db.session.add(demo)
 

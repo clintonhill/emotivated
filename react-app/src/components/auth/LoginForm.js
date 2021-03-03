@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { login } from "../../services/auth";
+import styled from 'styled-components'
+import { FormWrapper, FormRow, Button } from '../Forms/styles'
+
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const WelcomeMessage = styled.p`
+  font-size: large;
+`;
 
 const LoginForm = ({ authenticated, setAuthenticated }) => {
   const [errors, setErrors] = useState([]);
@@ -31,12 +45,17 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
 
   return (
     <form onSubmit={onLogin}>
+      <MainWrapper>
+      <WelcomeMessage>
+      Welcome back. Please login to send positive words and encouragement.
+      </WelcomeMessage>
+      <FormWrapper>
       <div>
         {errors.map((error) => (
           <div>{error}</div>
         ))}
       </div>
-      <div>
+      <FormRow>
         <label htmlFor="email">Email</label>
         <input
           name="email"
@@ -45,8 +64,8 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
           value={email}
           onChange={updateEmail}
         />
-      </div>
-      <div>
+      </FormRow>
+      <FormRow>
         <label htmlFor="password">Password</label>
         <input
           name="password"
@@ -55,8 +74,10 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
           value={password}
           onChange={updatePassword}
         />
-        <button type="submit">Login</button>
-      </div>
+      </FormRow>
+        <Button type="submit">Login</Button>
+      </FormWrapper>
+      </MainWrapper>
     </form>
   );
 };

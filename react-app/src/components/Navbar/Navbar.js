@@ -5,6 +5,8 @@ import { mainTheme, darkTheme } from '../../theme'
 
 const Container = styled.div`
   background-color:${props => props.theme.accent};
+  border-radius: 5px;
+  transition: background-color .5s ease-in;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,7 +21,7 @@ const Logo = styled.div`
   background-repeat: no-repeat;
 `;
 
-const Navbar = ({ setAuthenticated, userTheme, setUserTheme }) => {
+const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) => {
 
   const toggleTheme = () => {
     let newTheme = darkTheme;
@@ -36,17 +38,16 @@ const Navbar = ({ setAuthenticated, userTheme, setUserTheme }) => {
           <NavLink to="/" exact={true} activeClassName="active">
             Home
           </NavLink>
-          <NavLink to="/login" exact={true} activeClassName="active">
-            Login
-          </NavLink>
-          <NavLink to="/sign-up" exact={true} activeClassName="active">
-            Sign Up
-          </NavLink>
-          <NavLink to="/users" exact={true} activeClassName="active">
-            Users
-          </NavLink>
+          { !authenticated && <>
+            <NavLink to="/login" exact={true} activeClassName="active">
+              Login
+            </NavLink>
+            <NavLink to="/sign-up" exact={true} activeClassName="active">
+              Sign Up
+            </NavLink>
+          </>}
           <button onClick={toggleTheme}>Toggle Theme</button>
-          <LogoutButton setAuthenticated={setAuthenticated} />
+          { authenticated && <LogoutButton setAuthenticated={setAuthenticated} /> }
       </Container>
   );
 }
