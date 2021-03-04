@@ -23,6 +23,16 @@ const TopContainer = styled.div`
   width: 100%;
 `;
 
+const TopLeft = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Username = styled.p`
+  color: yellow;
+  padding-left: .25ch;
+`;
+
 const BottomContainer = styled.div`
   background-color: hsla(36.951219512195124, 82%, 60.7843137254902%, 0.781);
   width: 85%;
@@ -45,6 +55,7 @@ const ThemeButton = styled.input`
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/${props => props.theme.toggleHex}.svg");
   width: 30px;
   height: 30px;
+  margin: 10px;
   background-repeat: no-repeat;
   background-position: center;
   background-color: ${props => props.theme.primaryText};
@@ -65,11 +76,19 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
 
   }
 
+  const username = 'demouserman';
+
   return (
     <NavWrapper>
       <TopContainer>
           <Logo />
-          <ThemeButton type='button' onClick={toggleTheme}/>
+          <TopLeft>
+            {authenticated && <>
+            Welcome,<Username>{username}</Username>
+            <LogoutButton setAuthenticated={setAuthenticated} />
+            </>}
+            <ThemeButton type='button' onClick={toggleTheme}/>
+          </TopLeft>
       </TopContainer>
       <BottomContainer>
           <NavLink className='tab' exact to="/" activeClassName='active'>
@@ -83,7 +102,17 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
               Sign up
             </NavLink>
           </>}
-          { authenticated && <LogoutButton setAuthenticated={setAuthenticated} /> }
+          { authenticated && <>
+            <NavLink className='tab' to='/profile' activeClassName='active'>
+              Profile
+            </NavLink>
+            <NavLink className='tab' exact to='/new' activeClassName='active'>
+              New eMotivation
+            </NavLink>
+            <NavLink className='tab' to='/conversations' activeClassName='active'>
+              Conversations
+            </NavLink>
+          </> }
           </BottomContainer>
           </NavWrapper>
   );
