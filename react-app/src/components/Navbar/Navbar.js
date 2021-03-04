@@ -3,10 +3,13 @@ import LogoutButton from '../auth/LogoutButton';
 import styled from 'styled-components'
 import { mainTheme, darkTheme } from '../../theme'
 
+const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
+
 const NavWrapper = styled.div`
   display:flex;
   flex-direction: column;
   align-items: center;
+  padding: inherit;
 `;
 
 const TopContainer = styled.div`
@@ -39,7 +42,7 @@ const Logo = styled.div`
 `;
 
 const ThemeButton = styled.input`
-  background-image: url("${process.env.PUBLIC_URL}${process.env.REACT_APP_STICKER_FOLDER}/${props => props.theme.toggleHex}.svg");
+  background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/${props => props.theme.toggleHex}.svg");
   width: 30px;
   height: 30px;
   background-repeat: no-repeat;
