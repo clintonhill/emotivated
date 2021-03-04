@@ -2,7 +2,6 @@ import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 import styled from 'styled-components'
 import { mainTheme, darkTheme } from '../../theme'
-import openmoji from 'openmoji'
 
 const NavWrapper = styled.div`
   display:flex;
@@ -40,7 +39,7 @@ const Logo = styled.div`
 `;
 
 const ThemeButton = styled.input`
-  background-image: url("${process.env.PUBLIC_URL}/stickers/${props => props.theme.toggleHex}.svg");
+  background-image: url("${process.env.PUBLIC_URL}${process.env.REACT_APP_STICKER_FOLDER}/${props => props.theme.toggleHex}.svg");
   width: 30px;
   height: 30px;
   background-repeat: no-repeat;
