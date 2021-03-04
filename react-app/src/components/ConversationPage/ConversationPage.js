@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 import Message from './Message'
+import User from './User'
+import faker from 'faker'
+
+const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
 const PageWrapper = styled.div`
   width: 100vw;
@@ -9,10 +13,11 @@ const PageWrapper = styled.div`
 `;
 
 const ChatComponent = styled.div`
-  width: 85%;
-  height: 85%;
+  width: 70%;
+  height: 70%;
   display: flex;
-  margin-top: 10px;
+  margin-top: 30px;
+  box-shadow: 8px 8px 8px gray;
 `;
 
 const ChatList = styled.div`
@@ -21,6 +26,8 @@ const ChatList = styled.div`
   background-color: ${props => props.theme.accent};
   border-radius: 10px 10px 0 0;
   margin-right: 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 const Chat = styled.div`
@@ -30,9 +37,10 @@ const Chat = styled.div`
   border-radius: 10px 10px 0 0;
   display:flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  padding: 10px;
+  padding: 5px;
+  box-sizing: border-box;
 `;
 
 const ConversationPane = styled.div`
@@ -43,10 +51,36 @@ const ConversationPane = styled.div`
   overflow-x: hidden;
 `;
 
-const ChatInput = styled.input`
+const UserInputArea = styled.div`
+  display: flex;
   width: 100%;
   height: 10%;
+  align-items: center;
+`;
+
+const ChatInput = styled.textarea`
+  width: 98%;
+  height: auto;
   margin-top: 5px;
+  border-radius: 10px;
+  padding: 3px;
+`;
+
+const SendButton = styled.button`
+  background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/25B6.svg");
+  width: 30px;
+  height: 30px;
+  padding: 3px;
+  margin-right: 3px;
+  margin-left: 3px;
+  margin-top: 5px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: ${props => props.theme.backgroundColor};
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default function ConversationPage() {
@@ -54,7 +88,18 @@ export default function ConversationPage() {
       <PageWrapper>
         <ChatComponent>
           <ChatList>
-            Hello
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
+            <User user={faker.internet.userName()}/>
           </ChatList>
           <Chat>
             <ConversationPane>
@@ -65,7 +110,10 @@ export default function ConversationPage() {
               <Message user='2'/>
               <Message/>
             </ConversationPane>
-            <ChatInput/>
+            <UserInputArea>
+              <ChatInput/>
+              <SendButton />
+            </UserInputArea>
           </Chat>
         </ChatComponent>
 

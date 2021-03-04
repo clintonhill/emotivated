@@ -10,11 +10,14 @@ const UserName = styled.span`
   justify-self: ${props => props.user == 2 ? 'end' : 'start'};
 `;
 const TextContainer = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.backgroundColor};
+  color: ${props => props.theme.primaryText};
+  padding: 2px;
   border: 2px black solid;
   width: 48%;
   justify-self: ${props => props.user == 2 ? 'end' : 'start'};
   border-radius: ${props => props.user == 2 ? '10px 0 0 10px' : '0 10px 10px 0'};
+  transition: all .5s ease;
 `;
 
 export default function Message({user}) {
