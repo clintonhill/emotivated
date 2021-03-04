@@ -68,6 +68,7 @@ const ChatInput = styled.textarea`
 
 const SendButton = styled.button`
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/25B6.svg");
+  color: ${props => props.theme.primaryText};
   width: 30px;
   height: 30px;
   padding: 3px;
@@ -76,7 +77,7 @@ const SendButton = styled.button`
   margin-top: 5px;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: ${props => props.theme.backgroundColor};
+  background-color: white;
   border-radius: 50%;
   &:hover {
     cursor: pointer;
