@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom';
 import { signUp } from '../../services/auth';
 import styled from 'styled-components'
 import { FormWrapper, FormRow, Button, FormInput, OverflowLabel } from '../Forms/styles'
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/session";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -21,6 +23,7 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
+  const dispatch = useDispatch();
 
   const onSignUp = async (e) => {
     e.preventDefault();
@@ -28,6 +31,7 @@ const SignUpForm = ({authenticated, setAuthenticated}) => {
       const user = await signUp(username, email, password);
       if (!user.errors) {
         setAuthenticated(true);
+        dispatch(setUser(user));
       }
     }
   };
