@@ -32,7 +32,7 @@ const BottomContainer = styled.div`
 `;
 
 const Logo = styled.div`
-  background-image: url("${props => props.theme.logoPath}");
+  background-image: url("${process.env.PUBLIC_URL}${props => props.theme.logoPath}");
   width: 175px;
   height: 50px;
   background-position: center;
@@ -40,7 +40,7 @@ const Logo = styled.div`
 `;
 
 const ThemeButton = styled.input`
-  background-image: url("/stickers/${props => props.theme.toggleHex}.svg");
+  background-image: url("${process.env.PUBLIC_URL}/stickers/${props => props.theme.toggleHex}.svg");
   width: 30px;
   height: 30px;
   background-repeat: no-repeat;
