@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import UsersList from "./components/UsersList";
 import User from "./components/User";
 import IndexPage from './components/IndexPage'
+import ConversationPage from './components/ConversationPage'
 import { authenticate } from "./services/auth";
 
 
@@ -77,8 +78,14 @@ function App() {
         <ProtectedRoute path="/users/:userId" exact={true} authenticated={authenticated}>
           <User />
         </ProtectedRoute>
+        <Route path='/conversations' exact>
+          <ConversationPage />
+        </Route>
         <Route path="/" exact={true} authenticated={authenticated}>
           <IndexPage />
+        </Route>
+        <Route>
+          <h1>404</h1>
         </Route>
       </Switch>
       </ThemeProvider>
