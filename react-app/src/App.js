@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
   .active {
     background-color: ${props => props.theme.accent};
     font-weight: bold;
-    box-shadow: 5px 5px 5px gray;
+    box-shadow: 2px 2px 5px gray;
   }
 
   .tab {
@@ -36,6 +36,9 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: ${props => props.theme.primaryText};
     padding-top: 4px;
+  }
+  html {
+    overflow: hidden;
   }
 `;
 
