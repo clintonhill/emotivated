@@ -11,6 +11,8 @@ def seed_users():
                 last_active=datetime.now(), sticker_id=1,
                 profile_blurb='I am the demo user of the application.')
 
+    db.session.add(demo)
+
     fake = Faker()
 
     for i in range(50):
