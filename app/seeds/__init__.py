@@ -3,6 +3,7 @@ from .users import seed_users, undo_users
 from .stickers import seed_stickers, undo_stickers
 from .topics import seed_topics, undo_topics
 from .conversations import seed_conversations, undo_conversations
+from .messages import seed_messages, undo_messages
 
 # Creates a seed group to hold our commands
 # So we can type `flask seed --help`
@@ -15,6 +16,7 @@ def seed():
     seed_users()
     seed_topics()
     seed_conversations()
+    seed_messages()
     # Add other seed functions here
 
 # Creates the `flask seed undo` command
@@ -24,4 +26,5 @@ def undo():
     undo_stickers()
     undo_topics()
     undo_conversations()
+    undo_messages()
     # Add other undo functions here
