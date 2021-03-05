@@ -13,6 +13,7 @@ import ConversationPage from './components/ConversationPage'
 import { authenticate } from "./services/auth";
 import { setUser } from './store/session'
 import { useDispatch } from "react-redux";
+import ProfilePage from "./components/ProfilePage";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -89,6 +90,9 @@ function App() {
         <Route path='/conversations' exact>
           <ConversationPage />
         </Route>
+        <ProtectedRoute path='/profile' exact={true} authenticated={authenticated}>
+          <ProfilePage />
+        </ProtectedRoute>
         <Route path="/" exact={true} authenticated={authenticated}>
           <IndexPage />
         </Route>
