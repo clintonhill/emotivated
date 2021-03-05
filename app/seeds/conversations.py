@@ -27,5 +27,5 @@ def seed_conversations():
 # TRUNCATE Removes all the data from the table, and resets
 # the auto incrementing primary key
 def undo_conversations():
-    db.session.execute('TRUNCATE conversations CASCADE;')
+    db.session.execute('TRUNCATE conversations RESTART IDENTITY CASCADE;')
     db.session.commit()
