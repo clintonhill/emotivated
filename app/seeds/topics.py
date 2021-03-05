@@ -21,5 +21,5 @@ def seed_topics():
 # TRUNCATE Removes all the data from the table, and resets
 # the auto incrementing primary key
 def undo_topics():
-    db.session.execute('TRUNCATE topics CASCADE;')
+    db.session.execute('TRUNCATE topics RESTART IDENTITY CASCADE;')
     db.session.commit()
