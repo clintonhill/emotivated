@@ -40,3 +40,13 @@ class User(db.Model, UserMixin):
           "username": self.username,
           "email": self.email
         }
+
+    def to_profile_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "kudos": self.kudos,
+            "profile_blurb": self.profile_blurb,
+            "sticker_id": self.sticker_id,
+            "stickers": [sticker.to_dict() for sticker in self.stickers],
+        }

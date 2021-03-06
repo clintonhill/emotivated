@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
   .active {
     background-color: ${props => props.theme.accent};
     font-weight: bold;
-    box-shadow: 2px 2px 5px gray;
+    box-shadow: 2px 5px 5px gray;
   }
 
   .tab {
@@ -90,7 +90,7 @@ function App() {
         <Route path='/conversations' exact>
           <ConversationPage />
         </Route>
-        <ProtectedRoute path='/profile' exact={true} authenticated={authenticated}>
+        <ProtectedRoute path='/profile/:userId' exact={true} authenticated={authenticated}>
           <ProfilePage />
         </ProtectedRoute>
         <Route path="/" exact={true} authenticated={authenticated}>

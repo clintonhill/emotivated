@@ -103,7 +103,7 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
             </NavLink>
           </>}
           { authenticated && <>
-            <NavLink className='tab' to='/profile' activeClassName='active'>
+            <NavLink className='tab' to='/profile/me' activeClassName='active'>
               Profile
             </NavLink>
             <NavLink className='tab' exact to='/new' activeClassName='active'>

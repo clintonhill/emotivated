@@ -1,6 +1,11 @@
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import openmoji from 'openmoji'
-import faker from 'faker'
+import StickerContainer from './StickerContainer'
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfileUser } from '../../store/user';
+import { getAllStickers } from '../../store/stickers';
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -19,41 +24,18 @@ const MainComponent = styled.div`
   margin-top: 30px;
   border-radius: 10px 10px 0 0;
   box-shadow: 2px 2px 5px gray;
-  background-color: ${props => props.theme.accent};
-`;
-
-const StickerContainer = styled.div`
-  width: 100%;
-  height: 15%;
-  border-radius: 10px;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  display: flex;
-  flex-wrap: no-wrap;
-`;
-
-const Sticker = styled.div`
-  background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/${props => props.emojiId}.svg");
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  flex: 0 0 10%;
-  filter: ${props=> props.owned ? '': 'grayscale(100%) brightness(25%)'};
-  &:hover {
-    cursor: pointer;
-    border: 1px black solid;
-  }
+  background-color: #E8BA71;
 `;
 
 const ProfileContainer = styled.div`
   height: 100%;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.335);
   `;
 
   const ProfileTop = styled.div`
     display:flex;
     align-items: center;
+    margin-top: 20px
   `;
 
 const ProfilePicture = styled.div`
@@ -85,28 +67,39 @@ const Blurb = styled.h3`
   margin: 25px;
 `;
 
-const testEmojis = [openmoji.openmojis[0].hexcode, openmoji.openmojis[1].hexcode, openmoji.openmojis[2].hexcode, openmoji.openmojis[3].hexcode,
-                    openmoji.openmojis[4].hexcode, openmoji.openmojis[5].hexcode, openmoji.openmojis[6].hexcode, openmoji.openmojis[7].hexcode,
-                    openmoji.openmojis[8].hexcode, openmoji.openmojis[9].hexcode, openmoji.openmojis[10].hexcode, openmoji.openmojis[11].hexcode,
-                    openmoji.openmojis[12].hexcode, openmoji.openmojis[13].hexcode, openmoji.openmojis[14].hexcode, openmoji.openmojis[15].hexcode,
-                    openmoji.openmojis[0].hexcode, openmoji.openmojis[1].hexcode, openmoji.openmojis[2].hexcode, openmoji.openmojis[3].hexcode,
-                    openmoji.openmojis[4].hexcode, openmoji.openmojis[5].hexcode, openmoji.openmojis[6].hexcode, openmoji.openmojis[7].hexcode,
-                    openmoji.openmojis[8].hexcode, openmoji.openmojis[9].hexcode, openmoji.openmojis[10].hexcode, openmoji.openmojis[11].hexcode,
-                    openmoji.openmojis[12].hexcode, openmoji.openmojis[13].hexcode, openmoji.openmojis[14].hexcode, openmoji.openmojis[15].hexcode,]
-
 export default function ProfilePage() {
 
-  const user = {
-    username: 'Demo-Testman',
-    sticker_id: 866,
-    blurb: faker.lorem.paragraph(),
-    kudos: 43,
-  }
+  const { userId } = useParams();
+  const dispatch = useDispatch();
+  const session = useSelector(state => state.session)
+  let numId = userId == 'me' ? session.id : userId;
+  let user = useSelector(state => state.user[numId])
+  let stickers = useSelector(state => state.sticker)
+  let allStickers = useRef();;
+
+  useEffect(() => {
+    numId = userId == 'me' ? session.id : userId;
+    dispatch(getProfileUser(numId))
+  }, [dispatch, numId, userId])
+
+  useEffect(() => {
+    dispatch(getAllStickers())
+    allStickers.current = Object.keys(stickers).map(stickerId => stickers[stickerId].path)
+    console.log(allStickers)
+  }, [dispatch])
+
+  // const user = {
+  //   username: 'Demo-Testman',
+  //   sticker_id: 866,
+  //   blurb: faker.lorem.paragraph(),
+  //   kudos: 43,
+  // }
+  if(!user) return null;
   return (
     <PageWrapper>
       <MainComponent>
-        <StickerContainer>
-            {testEmojis?.map(emoji => <Sticker emojiId={emoji} owned={Math.random() < 0.5} />)}
+        <StickerContainer allStickers={stickers} userStickers={user.stickers}>
+            {/* {allStickers?.current?.map(sticker => <Sticker emojiId={sticker} owned={Math.random() < 0.5} />)} */}
         </StickerContainer>
         <ProfileContainer>
           <ProfileTop>
@@ -114,7 +107,7 @@ export default function ProfilePage() {
             <UserName>{user.username}</UserName>
             <Kudos><span>{user.kudos}</span></Kudos>
           </ProfileTop>
-          <Blurb>{user.blurb}</Blurb>
+          <Blurb>{user.profile_blurb}</Blurb>
         </ProfileContainer>
       </MainComponent>
     </PageWrapper>

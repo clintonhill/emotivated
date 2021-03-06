@@ -17,3 +17,9 @@ def users():
 def user(id):
     user = User.query.get(id)
     return user.to_dict()
+
+@user_routes.route('/profile/<int:id>')
+@login_required
+def profile_user(id):
+    user = User.query.get(id)
+    return user.to_profile_dict()
