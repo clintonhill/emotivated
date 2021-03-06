@@ -12,17 +12,17 @@ const PageWrapper = styled.div`
 `;
 
 const MainComponent = styled.div`
-  width: 70%;
-  height: 70%;
+  width: 80%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   margin-top: 30px;
   border-radius: 10px 10px 0 0;
   box-shadow: 2px 2px 5px gray;
+  background-color: ${props => props.theme.accent};
 `;
 
 const StickerContainer = styled.div`
-  background-color: ${props => props.theme.accent};
   width: 100%;
   height: 15%;
   border-radius: 10px;
@@ -38,6 +38,7 @@ const Sticker = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   flex: 0 0 10%;
+  filter: ${props=> props.owned ? '': 'grayscale(100%) brightness(25%)'};
   &:hover {
     cursor: pointer;
     border: 1px black solid;
@@ -45,8 +46,9 @@ const Sticker = styled.div`
 `;
 
 const ProfileContainer = styled.div`
-  height: 75%;
+  height: 100%;
   width: 100%;
+  background-color: rgba(255, 255, 255, 0.335);
   `;
 
   const ProfileTop = styled.div`
@@ -60,7 +62,6 @@ const ProfilePicture = styled.div`
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/${props => props.emojiId}.svg");
   background-position: center;
   background-repeat: no-repeat;
-
 `;
 
 const UserName = styled.h1`
@@ -77,6 +78,7 @@ const Kudos = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
 `;
 
 const Blurb = styled.h3`
@@ -96,7 +98,7 @@ export default function ProfilePage() {
 
   const user = {
     username: 'Demo-Testman',
-    sticker_id: 49,
+    sticker_id: 866,
     blurb: faker.lorem.paragraph(),
     kudos: 43,
   }
@@ -104,7 +106,7 @@ export default function ProfilePage() {
     <PageWrapper>
       <MainComponent>
         <StickerContainer>
-            {testEmojis?.map(emoji => <Sticker emojiId={emoji}/>)}
+            {testEmojis?.map(emoji => <Sticker emojiId={emoji} owned={Math.random() < 0.5} />)}
         </StickerContainer>
         <ProfileContainer>
           <ProfileTop>
