@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 import styled from 'styled-components'
 import { mainTheme, darkTheme } from '../../theme'
+import { useSelector } from 'react-redux';
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -76,7 +77,7 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
 
   }
 
-  const username = 'demouserman';
+  const username = useSelector(state => state.session.username)
 
   return (
     <NavWrapper>
@@ -103,7 +104,7 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
             </NavLink>
           </>}
           { authenticated && <>
-            <NavLink className='tab' to='/profile' activeClassName='active'>
+            <NavLink className='tab' to='/profile/me' activeClassName='active'>
               Profile
             </NavLink>
             <NavLink className='tab' exact to='/new' activeClassName='active'>

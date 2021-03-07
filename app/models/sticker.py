@@ -13,7 +13,9 @@ class Sticker(db.Model):
     users = db.relationship(
         'User', secondary=user_stickers, back_populates='stickers')
 
-    # def to_dict(self):
-    #     return {
-    #       "id": self.id,
-    #     }
+    def to_dict(self):
+        return {
+          "id": self.id,
+          "name": self.name,
+          "path": self.path
+        }

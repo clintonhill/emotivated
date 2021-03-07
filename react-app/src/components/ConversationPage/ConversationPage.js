@@ -13,8 +13,8 @@ const PageWrapper = styled.div`
 `;
 
 const ChatComponent = styled.div`
-  width: 70%;
-  height: 70%;
+  width: 80%;
+  height: 80%;
   display: flex;
   margin-top: 30px;
   border-radius: 10px 10px 0 0;
