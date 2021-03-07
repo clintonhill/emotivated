@@ -57,30 +57,34 @@ const SwipeComponent = styled.div`
   }
 `;
 
-const SwipeRegionLeft = styled.div`
+const SwipeRegionLeft = styled.div.attrs(props=> ({
+  style: {
+    filter: `opacity(${props.fill}%)`
+  }
+}))`
   height: 50%;
   width: 5%;
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/23EA.svg");
   background-color: green;
-  filter: opacity(${props=>props.fill}%);
   border-radius: 15px 0 0 15px;
-  cursor: pointer;
 `;
 
-const SwipeRegionRight = styled.div`
+const SwipeRegionRight = styled.div.attrs(props=> ({
+  style: {
+    filter: `opacity(${props.fill}%)`
+  }
+}))`
   height: 50%;
   width: 5%;
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/23E9.svg");
   background-color: red;
-  filter: opacity(${props=>props.fill}%);
   border-radius: 0 15px 15px 0;
-  cursor: pointer;
 `;
 
 const example = {
   topic: 'This is a topic that I feel down about, or need general advice on.',
   body: `Something really frustrating happened, and this is the contents of the post. I really would like some advice about this super frustrating thing. Thank you all for your kind words, and I'm looking forward to chatting with you all. You're all great. Sorry for rambling.`,
-  username: 'Zany Zebra',
+  username: 'Ignorant Ape',
   comments: 4
 }
 
