@@ -7,7 +7,7 @@ def seed_topics():
 
     fake = Faker()
 
-    for i in range(75):
+    for i in range(1, 75):
         # user = User(username=fake.user_name(), email=fake.ascii_free_email(), password='password11235',
         #             joined_date=datetime.now(), sticker_id=fake.random_int(min=1, max=2000, step=1), profile_blurb=fake.paragraph(), kudos=fake.random_int(min=0, max=500, step=1))
         topic = Topic(name='[Topic] '+fake.text(max_nb_chars=200), description='[Description] '+fake.paragraph(), author_id=fake.random_int(min=1, max=50),

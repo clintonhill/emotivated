@@ -22,5 +22,5 @@ class Conversation(db.Model):
             "is_public": self.is_public,
             "is_closed": self.is_closed,
             "responder_nickname": self.responder_nickname,
-            "current_is_author": current_user == self.responder_id
+            "current_is_author": current_user.id == self.responder_id
         }

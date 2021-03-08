@@ -1,4 +1,4 @@
-from app.models import db, Message
+from app.models import db, Message, Conversation
 from datetime import datetime
 from faker import Faker
 
@@ -13,7 +13,19 @@ def random_user(cur):
 # Adds a demo user, you can add other users here if you want
 def seed_messages():
 
-    for i in range(50):
+    conversation_count = Conversation.query.count()
+    for i in range(1, conversation_count):
+      conversation = Conversation.query.get(i)
+      for j in range(1, 10):
+        sender = conversation.responder_id
+        if fake.random_int(min=1, max=2) == 2:
+          sender = conversation.topic.author_id
+
+        message = Message(sender_id=sender, message=fake.paragraph(), conversation_id=i,
+                            timestamp=fake.date_time_between(start_date='-7d', end_date='now'), is_edited=False)
+        db.session.add(message)
+
+    for i in range(1, 50):
         for j in range(fake.random_int(min=1, max=10)):
           message = Message(sender_id=random_user(i), message=fake.paragraph(), conversation_id=fake.random_int(min=1, max=75),
                             timestamp=fake.date_time_between(start_date='-7d', end_date='now'), is_edited=False)

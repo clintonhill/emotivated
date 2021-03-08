@@ -23,5 +23,5 @@ class Message(db.Model):
             "conversation_id": self.conversation_id,
             "timestamp": self.timestamp,
             "is_edited": self.is_edited,
-            "current_is_author": current_user == self.sender_id
+            "current_is_author": current_user.id == self.sender_id
         }

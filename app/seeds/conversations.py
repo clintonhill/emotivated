@@ -1,4 +1,4 @@
-from app.models import db, Conversation
+from app.models import db, Conversation, Topic
 from datetime import datetime
 from faker import Faker
 
@@ -13,12 +13,15 @@ def random_user(cur):
 # Adds a demo user, you can add other users here if you want
 def seed_conversations():
 
-    for i in range(50):
-        for j in range(fake.random_int(min=1, max=10)):
-          conversation = Conversation(topic_id=fake.random_int(min=1, max=75),
-                                      responder_id=random_user(i), is_public=False, is_closed=False,
-                                      responder_nickname=fake.color_name() + ' ' + fake.job())
-          db.session.add(conversation)
+    for i in range(1, 75):
+      topic = Topic.query.get(i)
+      author = topic.author_id
+      for j in range(1, fake.random_int(min=1, max=10)):
+        responder = random_user(author)
+        conversation = Conversation(topic_id=i, responder_id=responder, is_public=False,
+                                    is_closed=False, responder_nickname=fake.color_name() + ' ' + fake.job())
+
+        db.session.add(conversation)
 
     db.session.commit()
 

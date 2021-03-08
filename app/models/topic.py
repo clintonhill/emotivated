@@ -24,5 +24,5 @@ class Topic(db.Model):
             "date_added": self.date_added,
             "is_resolved": self.is_resolved,
             "author_nickname": self.author_nickname,
-            "current_is_author": current_user == self.author_id
+            "current_is_author": current_user.id == self.author_id
         }
