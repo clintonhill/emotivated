@@ -16,7 +16,13 @@ class Topic(db.Model):
 
     author = db.relationship('User')
 
-    # def to_dict(self):
-    #     return {
-    #       "id": self.id,
-    #     }
+    def to_dict(self, current_user):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "date_added": self.date_added,
+            "is_resolved": self.is_resolved,
+            "author_nickname": self.author_nickname,
+            "current_is_author": current_user == self.author_id
+        }

@@ -15,11 +15,12 @@ class Conversation(db.Model):
     topic = db.relationship('Topic')
     responder = db.relationship('User')
 
-    def to_dict(self):
+    def to_dict(self, current_user):
         return {
             "id": self.id,
-            "topic_id": self.topic_id,
+            "topic": self.topic.to_dict(current_user),
             "is_public": self.is_public,
             "is_closed": self.is_closed,
-            "responder_nickname": self.responder_nickname
+            "responder_nickname": self.responder_nickname,
+            "current_is_author": current_user == self.responder_id
         }
