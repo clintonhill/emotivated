@@ -31,12 +31,17 @@ const SwipeWrapper = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const SwipeComponent = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: red;
   width: 50%;
   height: 75%;
   align-items: flex-start;
@@ -65,8 +70,14 @@ const SwipeRegionLeft = styled.div.attrs(props=> ({
   height: 50%;
   width: 5%;
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/23EA.svg");
-  background-color: green;
+  background-color: red;
   border-radius: 15px 0 0 15px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const SwipeRegionRight = styled.div.attrs(props=> ({
@@ -77,8 +88,14 @@ const SwipeRegionRight = styled.div.attrs(props=> ({
   height: 50%;
   width: 5%;
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/23E9.svg");
-  background-color: red;
+  background-color: green;
   border-radius: 0 15px 15px 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const example = {
@@ -157,8 +174,19 @@ export default function IndexPage() {
     <PageWrapper>
       <MainComponent>
         <p>Swipe right to eMotivate!</p>
-        <SwipeWrapper>
-        <SwipeRegionLeft fill={determineFill(false)}/>
+        <SwipeWrapper
+        onTouchEnd={onTouchEnd}
+        onTouchMove={onTouchMove}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseEnd}
+        >
+        <SwipeRegionLeft
+        fill={determineFill(false)}
+          onTouchEnd={onTouchEnd}
+          onTouchMove={onTouchMove}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseEnd}
+          />
         <SwipeComponent
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
@@ -172,7 +200,12 @@ export default function IndexPage() {
           <h5>{example.body}</h5>
           <h6>{example.comments}</h6>
         </SwipeComponent>
-        <SwipeRegionRight fill={determineFill(true)}/>
+        <SwipeRegionRight fill={determineFill(true)}
+        onTouchEnd={onTouchEnd}
+        onTouchMove={onTouchMove}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseEnd}
+        />
         </SwipeWrapper>
       </MainComponent>
     </PageWrapper>
