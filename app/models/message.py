@@ -16,7 +16,11 @@ class Message(db.Model):
     sender = db.relationship('User')
     conversation = db.relationship('Conversation')
 
-    # def to_dict(self):
-    #     return {
-    #       "id": self.id,
-    #     }
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "message": self.message,
+            "conversation_id": self.conversation_id,
+            "timestamp": self.timestamp,
+            "is_edited": self.is_edited,
+        }

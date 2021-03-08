@@ -15,7 +15,11 @@ class Conversation(db.Model):
     topic = db.relationship('Topic')
     responder = db.relationship('User')
 
-    # def to_dict(self):
-    #     return {
-    #       "id": self.id,
-    #     }
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "topic_id": self.topic_id,
+            "is_public": self.is_public,
+            "is_closed": self.is_closed,
+            "responder_nickname": self.responder_nickname
+        }

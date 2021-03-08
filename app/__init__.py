@@ -4,17 +4,21 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
+from flask_socketio import SocketIO, send
 
 from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.stickers_routes import sticker_routes
+from .api.conversation_routes import conversation_routes
 
 from .seeds import seed_commands
 
 from .config import Config
 
 app = Flask(__name__)
+
+socketio = SocketIO(app)
 
 # Setup login manager
 login = LoginManager(app)
@@ -33,6 +37,7 @@ app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(sticker_routes, url_prefix='/api/stickers/')
+app.register_blueprint(conversation_routes, url_prefix='/api/conversations/')
 db.init_app(app)
 Migrate(app, db)
 
@@ -44,6 +49,15 @@ CORS(app)
 # Therefore, we need to make sure that in production any
 # request made over http is redirected to https.
 # Well.........
+
+# SocketIO implementation
+
+@socketio.on('message')
+def handle_message(data):
+    print('received message: ' + data)
+
+if(__name__ == '__main__'):
+    socketio.run(app)
 
 @app.before_request
 def https_redirect():

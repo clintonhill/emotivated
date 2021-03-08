@@ -20,12 +20,12 @@ const TextContainer = styled.div`
   transition: all .5s ease;
 `;
 
-export default function Message({user}) {
+export default function Message({message, user}) {
   return(
     <Wrapper>
       <UserName user={user}>{ user==2 ? 'You' : 'Zany Giraffe' }</UserName>
       <TextContainer user={user}>
-        {faker.lorem.sentences()}
+        {message.message}
       </TextContainer>
     </Wrapper>
   )

@@ -2,6 +2,10 @@ import styled from 'styled-components'
 import Message from './Message'
 import User from './User'
 import faker from 'faker'
+import { io } from 'socket.io-client'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getChatPartners, getConversationMessages } from '../../store/conversations';
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -85,36 +89,52 @@ const SendButton = styled.button`
   }
 `;
 
+const socket = io();
+
 export default function ConversationPage() {
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [activeConversation, setActiveConversation] = useState(null);
+
+  const user = useSelector(state => state.session);
+  const conversations = useSelector(state => state.conversations?.conversations)
+  const messages = useSelector(state => activeConversation && state.conversations.messages)
+
+  const dispatch = useDispatch();
+  const onSend = () => {
+    socket.emit('message', currentMessage)
+    setCurrentMessage('');
+  }
+
+  //Get users that the current user is in conversations with.
+  useEffect(() => {
+    dispatch(getChatPartners(user.id));
+  }, [dispatch, user])
+
+  //Get the conversation of the active user
+  useEffect(() => {
+    dispatch(getConversationMessages(activeConversation))
+  }, [dispatch, activeConversation])
+
   return (
       <PageWrapper>
         <ChatComponent>
           <ChatList>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
-            <User user={faker.internet.userName()}/>
+            {conversations?.map(conversation => <User
+            user={conversation.responder_nickname}
+            id={conversation.id}
+            setActiveConversation={setActiveConversation}
+            />)}
           </ChatList>
           <Chat>
             <ConversationPane>
-              <Message/>
-              <Message user='2'/>
-              <Message/>
-              <Message/>
-              <Message user='2'/>
-              <Message/>
+              {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message message={message}/>)}
             </ConversationPane>
             <UserInputArea>
-              <ChatInput/>
-              <SendButton />
+              <ChatInput
+              value={currentMessage}
+              onChange={(e)=> setCurrentMessage(e.target.value)}
+              />
+              <SendButton onClick={onSend} />
             </UserInputArea>
           </Chat>
         </ChatComponent>

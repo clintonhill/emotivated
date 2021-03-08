@@ -18,9 +18,9 @@ const TextContainer = styled.div`
   }
 `;
 
-export default function User({user}) {
+export default function User({user, id, setActiveConversation}) {
   return(
-    <Wrapper>
+    <Wrapper onClick={()=> setActiveConversation(id)}>
       <TextContainer>
         {user}
       </TextContainer>
