@@ -98,6 +98,22 @@ const SwipeRegionRight = styled.div.attrs(props=> ({
   user-select: none;
 `;
 
+const CommentsContainer = styled.div`
+  display: flex;
+  width: 10%;
+  height: 10%;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CommentImage = styled.div`
+    background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/E248.svg");
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+`;
+
 const example = {
   topic: 'This is a topic that I feel down about, or need general advice on.',
   body: `Something really frustrating happened, and this is the contents of the post. I really would like some advice about this super frustrating thing. Thank you all for your kind words, and I'm looking forward to chatting with you all. You're all great. Sorry for rambling.`,
@@ -198,7 +214,10 @@ export default function IndexPage() {
           <h6>{example.username}</h6>
           <h3>{example.topic}</h3>
           <h5>{example.body}</h5>
-          <h6>{example.comments}</h6>
+          <CommentsContainer>
+            <CommentImage />
+            <h6>{example.comments}</h6>
+          </CommentsContainer>
         </SwipeComponent>
         <SwipeRegionRight fill={determineFill(true)}
         onTouchEnd={onTouchEnd}
