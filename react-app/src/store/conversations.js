@@ -36,7 +36,7 @@ const conversationReducer = (state = {}, action) => {
   let newState = {...state};
   switch (action.type){
       case SET_CONVERSATIONS:
-          newState= {...newState, ...action.payload}
+          newState = {...newState, ...action.payload}
           return newState;
       case SET_ONE_CONVERSATION:
         if(!newState.messages) newState.messages = {}

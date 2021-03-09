@@ -11,7 +11,7 @@ conversation_routes = Blueprint('conversations', __name__)
 def getConversations(id):
     # conversations = db.session.query(Conversation).join(Topic).filter(or_(Conversation.responder_id==id, Topic.author_id==id)).all()
     conversations = db.session.query(Conversation).join(Topic).filter((Conversation.responder_id==id) | (Topic.author_id==id)).all()
-    return {"conversations": [conversation.to_dict(current_user) for conversation in conversations]}
+    return {"conversations" :{conversation.id: conversation.to_dict(current_user) for conversation in conversations}}
 
 @conversation_routes.route('/<int:id>')
 @login_required

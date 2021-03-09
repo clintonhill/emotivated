@@ -56,6 +56,10 @@ const ConversationPane = styled.div`
   overflow-x: hidden;
 `;
 
+const TopicContainer = styled.div`
+
+`;
+
 const UserInputArea = styled.div`
   display: flex;
   width: 100%;
@@ -119,7 +123,7 @@ export default function ConversationPage() {
       <PageWrapper>
         <ChatComponent>
           <ChatList>
-            {conversations?.map(conversation => <User
+            {conversations && Object.values(conversations).map(conversation => <User
             user={conversation.responder_nickname}
             id={conversation.id}
             setActiveConversation={setActiveConversation}
@@ -127,6 +131,10 @@ export default function ConversationPage() {
           </ChatList>
           <Chat>
             <ConversationPane>
+              {activeConversation && conversations[activeConversation] && <TopicContainer>
+                <h3>{conversations[activeConversation].topic.name}</h3>
+                <h5>{conversations[activeConversation].topic.description}</h5>
+              </TopicContainer>}
               {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message message={message}/>)}
             </ConversationPane>
             <UserInputArea>
