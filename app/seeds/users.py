@@ -27,10 +27,10 @@ def seed_users():
     # stickers = Sticker.query.limit(5).all()
     # print(stickers)
 
-    for i in range(50):
+    for i in range(25):
         user = User(username=fake.user_name(), email=fake.ascii_free_email(), password='password11235',
                     joined_date=datetime.now(), sticker_id=fake.random_int(min=1, max=stickers_count), profile_blurb=fake.paragraph(), kudos=fake.random_int(min=0, max=500, step=1))
-        num_stickers = fake.random_int(min=1, max=30)
+        num_stickers = fake.random_int(min=1, max=20)
         nums = random.sample(range(1, stickers_count), num_stickers)
         for j in nums:
             sticker = Sticker.query.get(j)

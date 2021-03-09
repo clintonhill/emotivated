@@ -7,13 +7,13 @@ fake = Faker()
 def random_user(cur):
   random = cur
   while random is cur:
-    random = fake.random_int(min=1, max=50)
+    random = fake.random_int(min=1, max=25)
   return random
 
 # Adds a demo user, you can add other users here if you want
 def seed_conversations():
 
-    for i in range(1, 75):
+    for i in range(1, 25):
       topic = Topic.query.get(i)
       author = topic.author_id
       for j in range(1, fake.random_int(min=1, max=10)):
