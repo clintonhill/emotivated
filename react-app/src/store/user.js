@@ -21,9 +21,9 @@ const userReducer = (state = {}, action) => {
         case SET_USER:
             let id = action.payload.id
             newState[id] = action.payload
-            return newState
+            return newState;
         default:
-            return state
+          return state;
     }
 }
 

@@ -1,5 +1,5 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components'
-import faker from 'faker'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   display: grid;
 `;
 const UserName = styled.span`
-  justify-self: ${props => props.user == 2 ? 'end' : 'start'};
+  justify-self: ${props => props.user == 'You' ? 'end' : 'start'};
 `;
 const TextContainer = styled.div`
   background-color: ${props => props.theme.backgroundColor};
@@ -15,17 +15,34 @@ const TextContainer = styled.div`
   padding: 2px;
   border: 2px black solid;
   width: 48%;
-  justify-self: ${props => props.user == 2 ? 'end' : 'start'};
-  border-radius: ${props => props.user == 2 ? '10px 0 0 10px' : '0 10px 10px 0'};
+  justify-self: ${props => props.user == 'You' ? 'end' : 'start'};
+  border-radius: ${props => props.user == 'You' ? '10px 0 0 10px' : '0 10px 10px 0'};
   transition: all .5s ease;
 `;
 
-export default function Message({user}) {
+export default function Message({message}) {
+
+  const conversations = useSelector(state => state.conversations?.conversations)
+
+  const user = message => {
+    if (message.current_is_author)
+      return 'You';
+    else {
+      for(let conversation in conversations) {
+        if(conversations[conversation].id === message.conversation_id) {
+          return conversations[conversation].responder_nickname;
+        }
+      }
+    }
+    return 'Unknown'
+  }
+  const current = user(message)
+
   return(
     <Wrapper>
-      <UserName user={user}>{ user==2 ? 'You' : 'Zany Giraffe' }</UserName>
-      <TextContainer user={user}>
-        {faker.lorem.sentences()}
+      <UserName user={current}>{ current }</UserName>
+      <TextContainer user={current}>
+        {message.message}
       </TextContainer>
     </Wrapper>
   )
