@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
+import { postOneTopic } from '../../store/topics';
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -79,10 +81,26 @@ const generateNickname = () => {
 export default function NewEmotivation() {
 
   const [nickname, setNickname] = useState(null);
+  const [topic, setTopic] = useState('');
+  const [description, setDescription] = useState('');
+
+  const user = useSelector(state => state.session.id)
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setNickname(generateNickname())
   }, [])
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    const formData = {
+      name: topic,
+      description: description,
+      author_id: user,
+      author_nickname: nickname
+    }
+    dispatch(postOneTopic(formData))
+  }
 
   return (
     <PageWrapper>
@@ -101,14 +119,21 @@ export default function NewEmotivation() {
         </FormRow>
         <FormRow>
           <label for='topic'>Topic</label>
-          <input name='topic' />
+          <input
+          name='topic'
+          value={topic}
+          onChange={e => setTopic(e.target.value)}/>
         </FormRow>
         <FormRow>
           <label for='details'>Details</label>
-          <textarea name='details' />
+          <textarea
+          name='details'
+          value={description}
+          onChange={e => setDescription(e.target.value)} />
         </FormRow>
 
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton
+        onClick={submitForm}>Submit</SubmitButton>
         </Form>
       </MainComponent>
     </PageWrapper>

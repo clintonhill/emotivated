@@ -25,7 +25,6 @@ export const addMessageToConversation = (message) => {
 
 export const getConversationMessages = conversationId => async dispatch => {
   const response = await fetch(`/api/conversations/${conversationId}`)
-  console.log()
   if(response.ok) {
     const conversation = await response.json();
     dispatch(setOneConversation(conversation))

@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import conversationReducer from './conversations';
 import sessionReducer from './session';
 import stickerReducer from './stickers';
+import topicReducer from './topics';
 import userReducer from './user'
 
 const rootReducer = combineReducers({
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   sticker: stickerReducer,
   conversations: conversationReducer,
+  topics: topicReducer,
 });
 
 let enhancer;
