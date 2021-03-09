@@ -98,6 +98,7 @@ const socket = io();
 export default function ConversationPage() {
   const [currentMessage, setCurrentMessage] = useState('');
   const [activeConversation, setActiveConversation] = useState(null);
+  const [chatMessages, setChatMessages] = useState([])
 
   const user = useSelector(state => state.session);
   const conversations = useSelector(state => state.conversations?.conversations)
@@ -105,9 +106,15 @@ export default function ConversationPage() {
 
   const dispatch = useDispatch();
   const onSend = () => {
-    socket.emit('message', currentMessage)
+    socket.emit('message', JSON.stringify({content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
     setCurrentMessage('');
   }
+
+  useEffect(() => {
+    socket.on('message', msg => {
+      setChatMessages([...chatMessages, msg])
+    })
+  })
 
   //Get users that the current user is in conversations with.
   useEffect(() => {
@@ -136,6 +143,7 @@ export default function ConversationPage() {
                 <h5>{conversations[activeConversation].topic.description}</h5>
               </TopicContainer>}
               {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message message={message}/>)}
+              {chatMessages && chatMessages.map(message => <h4>{message}</h4>)}
             </ConversationPane>
             <UserInputArea>
               <ChatInput
