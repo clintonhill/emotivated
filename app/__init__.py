@@ -5,9 +5,10 @@ from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager
 from flask_socketio import SocketIO, send, emit
+
 import json
 
-from .models import db, User
+from .models import db, User, Conversation, Message
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.stickers_routes import sticker_routes
@@ -53,13 +54,43 @@ CORS(app)
 
 # SocketIO implementation
 
-@socketio.on('message')
+users = {}
+
+@socketio.on('client_message')
 def handle_message(data):
-    # json_data = json.loads(data)
     data = json.loads(data)
     content, from_id, conversation_id = data.values()
-    emit('message', content)
+    conversation = Conversation.query.get(conversation_id)
+
+    message = Message(message=content, sender_id=from_id,
+                      conversation_id=conversation_id)
+    db.session.add(message)
+    db.session.commit()
+
+
+
+    if conversation.responder_id == from_id:
+        other_user = conversation.topic.author_id
+    else:
+        other_user = conversation.responder_id
+
+    if other_user in users:
+        emit('message', {"msg": content, "conversation_id":conversation_id, "is_author": False }, room=users[other_user])
+
+    if from_id not in users or users[from_id] != request.sid:
+        users[from_id] = request.sid
+
+    emit('message', {"msg": content, "conversation_id":conversation_id, "is_author": True}, room=users[from_id])
     print('received message: ' + content)
+    print(users)
+
+@socketio.on('connection')
+def handle_connect(data):
+    user_id = data
+    if user_id not in users or users[user_id] != request.sid:
+        users[user_id] = request.sid
+    emit('connection_event', users[user_id], broadcast=True)
+    print('User join ' + str(users[user_id]))
 
 if(__name__ == '__main__'):
     socketio.run(app)
