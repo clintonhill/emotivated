@@ -1,6 +1,7 @@
 from app.models import db, Conversation, Topic
 from datetime import datetime
 from faker import Faker
+from .random_seed import get_random_name
 
 fake = Faker()
 
@@ -19,7 +20,7 @@ def seed_conversations():
       for j in range(1, fake.random_int(min=1, max=10)):
         responder = random_user(author)
         conversation = Conversation(topic_id=i, responder_id=responder, is_public=False,
-                                    is_closed=False, responder_nickname=fake.color_name() + ' ' + fake.job())
+                                    is_closed=False, responder_nickname=get_random_name())
 
         db.session.add(conversation)
 
