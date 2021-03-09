@@ -25,12 +25,6 @@ def seed_messages():
                             timestamp=fake.date_time_between(start_date='-7d', end_date='now'), is_edited=False)
         db.session.add(message)
 
-    for i in range(1, 50):
-        for j in range(fake.random_int(min=1, max=10)):
-          message = Message(sender_id=random_user(i), message=fake.paragraph(), conversation_id=fake.random_int(min=1, max=75),
-                            timestamp=fake.date_time_between(start_date='-7d', end_date='now'), is_edited=False)
-          db.session.add(message)
-
     db.session.commit()
 
 # Uses a raw SQL query to TRUNCATE the users table.

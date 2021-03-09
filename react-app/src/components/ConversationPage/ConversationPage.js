@@ -5,7 +5,7 @@ import faker from 'faker'
 import { io } from 'socket.io-client'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getChatPartners, getConversationMessages } from '../../store/conversations';
+import { getChatPartners, getConversationMessages, addMessageToConversation } from '../../store/conversations';
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -75,6 +75,13 @@ const ChatInput = styled.textarea`
   padding: 3px;
 `;
 
+const EndContainer = styled.div`
+  display: ${props => props.activeConversation ? "flex": "none"};
+  justify-content: space-between;
+  height: 20px;
+  align-items: center;
+`;
+
 const SendButton = styled.button`
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/25B6.svg");
   color: ${props => props.theme.primaryText};
@@ -105,9 +112,23 @@ export default function ConversationPage() {
 
   const dispatch = useDispatch();
   const onSend = () => {
-    socket.emit('message', currentMessage)
+    socket.emit('client_message', JSON.stringify({content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
     setCurrentMessage('');
   }
+
+  useEffect(() => {
+    socket.on('message', msg => {
+      const payload = {
+        conversation_id: msg.conversation_id,
+        current_is_author: msg.is_author,
+        is_edited: false,
+        message: msg.msg,
+        timestamp: Date.now()
+      }
+      dispatch(addMessageToConversation(payload));
+    })
+    socket.on('connection_event', (msg) => console.log(`Connected as ${msg}`))
+  }, [])
 
   //Get users that the current user is in conversations with.
   useEffect(() => {
@@ -117,6 +138,7 @@ export default function ConversationPage() {
   //Get the conversation of the active user
   useEffect(() => {
     dispatch(getConversationMessages(activeConversation))
+    socket.emit('connection', user.id)
   }, [dispatch, activeConversation])
 
   return (
@@ -136,13 +158,18 @@ export default function ConversationPage() {
                 <h5>{conversations[activeConversation].topic.description}</h5>
               </TopicContainer>}
               {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message message={message}/>)}
+              <EndContainer activeConversation={activeConversation}>
+                <h6>You can always end a conversation. Once you end the conversation you can choose if you want to give kudos to your chat partner or not.</h6>
+                <button>End Conversation</button>
+              </EndContainer>
             </ConversationPane>
             <UserInputArea>
               <ChatInput
               value={currentMessage}
               onChange={(e)=> setCurrentMessage(e.target.value)}
+              disabled={!activeConversation}
               />
-              <SendButton onClick={onSend} />
+              <SendButton disabled={!activeConversation} onClick={onSend} />
             </UserInputArea>
           </Chat>
         </ChatComponent>

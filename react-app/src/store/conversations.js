@@ -1,5 +1,6 @@
 const SET_CONVERSATIONS = 'conversations/SET_CONVERSATIONS'
 const SET_ONE_CONVERSATION = 'conversations/SET_ONE_CONVERSATION'
+const ADD_MESSAGE_TO_CONVERSATION = 'conversations/ADD_MESSAGE_TO_CONVERSATION'
 
 export const setConversations = (users) => {
   return {
@@ -12,6 +13,13 @@ const setOneConversation = (conversation) => {
   return {
     type: SET_ONE_CONVERSATION,
     payload: conversation
+  }
+}
+
+export const addMessageToConversation = (message) => {
+  return {
+    type: ADD_MESSAGE_TO_CONVERSATION,
+    payload: message
   }
 }
 
@@ -41,6 +49,12 @@ const conversationReducer = (state = {}, action) => {
       case SET_ONE_CONVERSATION:
         if(!newState.messages) newState.messages = {}
         newState.messages = {...newState.messages, ...action.payload };
+        return newState;
+      case ADD_MESSAGE_TO_CONVERSATION:
+        console.log(action.payload)
+        const newMessages = {...state.messages }
+        newMessages[action.payload.conversation_id] = [...newMessages[action.payload.conversation_id], action.payload]
+        newState.messages = newMessages;
         return newState;
       default:
         return state;
