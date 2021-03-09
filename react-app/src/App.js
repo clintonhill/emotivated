@@ -10,6 +10,7 @@ import UsersList from "./components/UsersList";
 import User from "./components/User";
 import IndexPage from './components/IndexPage'
 import ConversationPage from './components/ConversationPage'
+import NewEmotivation from './components/NewEmotivation'
 import { authenticate } from "./services/auth";
 import { setUser } from './store/session'
 import { useDispatch } from "react-redux";
@@ -92,6 +93,9 @@ function App() {
         </Route>
         <ProtectedRoute path='/profile/:userId' exact={true} authenticated={authenticated}>
           <ProfilePage />
+        </ProtectedRoute>
+        <ProtectedRoute path='/new' exact authenticated={authenticated}>
+          <NewEmotivation />
         </ProtectedRoute>
         <Route path="/" exact={true} authenticated={authenticated}>
           <IndexPage />
