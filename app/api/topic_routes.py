@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_login import login_required, current_user
 from app.models import Topic, db
 from app.forms import NewTopicForm
+from sqlalchemy.sql.expression import func, select
 
 topic_routes = Blueprint('topics', __name__)
 
@@ -31,3 +32,10 @@ def postTopic():
     return topic.to_dict(current_user)
 
   return {"errors": "Error!"}, 400
+
+
+@topic_routes.route('/random')
+def getRandomTopic():
+  rand = db.session.query(Topic).order_by(func.random()).first()
+
+  return rand.to_dict(current_user)

@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {useDispatch, useSelector} from 'react-redux'
+import { getOneTopic} from '../../store/topics'
 import styled from 'styled-components'
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
@@ -127,6 +129,9 @@ export default function IndexPage() {
   const [touchEnd, setTouchEnd] = useState(0);
   const [touchDelta, setTouchDelta] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [topic, setTopic] = useState(null)
+  const topicState = useSelector(state => state.topics)
+  const dispatch = useDispatch();
 
   const SWIPE_SENSITIVITY = 200;
 
@@ -136,7 +141,7 @@ export default function IndexPage() {
   }
   const onTouchEnd = (e) => {
     if(touchDelta > SWIPE_SENSITIVITY)
-      console.log('Swiped Left')
+      getNewTopic();
     if(touchDelta < - SWIPE_SENSITIVITY)
       console.log('Swiped Right')
 
@@ -155,7 +160,7 @@ export default function IndexPage() {
   }
   const onMouseEnd = (e) => {
     if(touchDelta > SWIPE_SENSITIVITY)
-      console.log('Swiped Left')
+      getNewTopic();
     if(touchDelta < - SWIPE_SENSITIVITY)
       console.log('Swiped Right')
 
@@ -168,6 +173,15 @@ export default function IndexPage() {
     setTouchEnd(e.clientX);
     setTouchDelta(touchStart - touchEnd);
   }
+
+  const getNewTopic = async () => {
+    const topicId = await dispatch(getOneTopic());
+    setTopic(topicId)
+  }
+
+  useEffect(() => {
+    getNewTopic();
+  }, [])
 
   const determineFill = isRight => {
     const base = 10;
@@ -211,9 +225,9 @@ export default function IndexPage() {
           onMouseMove={onMouseMove}
           onMouseUp={onMouseEnd}
         >
-          <h6>{example.username}</h6>
-          <h3>{example.topic}</h3>
-          <h5>{example.body}</h5>
+          {topic && <h6>{topicState[topic].author_nickname}</h6>}
+          {topic && <h3>{topicState[topic].name}</h3>}
+          {topic && <h5>{topicState[topic].description}</h5> }
           <CommentsContainer>
             <CommentImage />
             <h6>{example.comments}</h6>
