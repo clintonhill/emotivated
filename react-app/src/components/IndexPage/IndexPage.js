@@ -140,9 +140,10 @@ export default function IndexPage() {
     setTouchStart(e.targetTouches[0].clientX);
   }
   const onTouchEnd = (e) => {
+    e.stopPropagation();
     if(touchDelta > SWIPE_SENSITIVITY)
       getNewTopic();
-    if(touchDelta < - SWIPE_SENSITIVITY)
+    if(touchDelta < -SWIPE_SENSITIVITY)
       console.log('Swiped Right')
 
     console.log(touchDelta/SWIPE_SENSITIVITY)
@@ -159,9 +160,10 @@ export default function IndexPage() {
     setIsDragging(true);
   }
   const onMouseEnd = (e) => {
+    e.stopPropagation();
     if(touchDelta > SWIPE_SENSITIVITY)
       getNewTopic();
-    if(touchDelta < - SWIPE_SENSITIVITY)
+    if(touchDelta < -SWIPE_SENSITIVITY)
       console.log('Swiped Right')
 
     console.log(touchDelta/SWIPE_SENSITIVITY)
