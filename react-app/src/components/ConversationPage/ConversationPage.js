@@ -6,6 +6,7 @@ import { io } from 'socket.io-client'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getChatPartners, getConversationMessages, addMessageToConversation } from '../../store/conversations';
+import { useHistory, useParams } from 'react-router'
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -102,7 +103,7 @@ const SendButton = styled.button`
 
 const socket = io();
 
-export default function ConversationPage() {
+export default function ConversationPage({forceConversation, setForceConversation}) {
   const [currentMessage, setCurrentMessage] = useState('');
   const [activeConversation, setActiveConversation] = useState(null);
 
@@ -111,6 +112,7 @@ export default function ConversationPage() {
   const messages = useSelector(state => activeConversation && state.conversations.messages)
 
   const dispatch = useDispatch();
+
   const onSend = () => {
     socket.emit('client_message', JSON.stringify({content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
     setCurrentMessage('');
@@ -135,23 +137,39 @@ export default function ConversationPage() {
     dispatch(getChatPartners(user.id));
   }, [dispatch, user])
 
+  //If the id is set, open that conversation
+  useEffect(() => {
+    if(forceConversation) {
+      setActiveConversation(forceConversation);
+      setForceConversation(null)
+    }
+  }, [forceConversation])
+
   //Get the conversation of the active user
   useEffect(() => {
     dispatch(getConversationMessages(activeConversation))
     socket.emit('connection', user.id)
   }, [dispatch, activeConversation])
 
+  const getNickname = (conversation) => {
+    if(conversation.current_is_author) {
+      return conversation.topic.author_nickname;
+    }
+    return conversation.responder_nickname;
+  }
+
   return (
       <PageWrapper>
         <ChatComponent>
           <ChatList>
             {conversations && Object.values(conversations).map(conversation => <User
-            user={conversation.responder_nickname}
+            user={getNickname(conversation)}
             id={conversation.id}
             setActiveConversation={setActiveConversation}
             />)}
           </ChatList>
           <Chat>
+            {activeConversation && conversations && getNickname(conversations[activeConversation])}
             <ConversationPane>
               {activeConversation && conversations[activeConversation] && <TopicContainer>
                 <h3>{conversations[activeConversation].topic.name}</h3>

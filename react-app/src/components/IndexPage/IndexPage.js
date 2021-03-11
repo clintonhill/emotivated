@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { getOneTopic} from '../../store/topics'
+import { makeConversationConnection } from '../../store/conversations'
 import styled from 'styled-components'
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
@@ -123,7 +125,7 @@ const example = {
   comments: 4
 }
 
-export default function IndexPage() {
+export default function IndexPage({setForceConversation}) {
 
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
@@ -132,6 +134,7 @@ export default function IndexPage() {
   const [topic, setTopic] = useState(null)
   const topicState = useSelector(state => state.topics)
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const SWIPE_SENSITIVITY = 200;
 
@@ -140,10 +143,11 @@ export default function IndexPage() {
     setTouchStart(e.targetTouches[0].clientX);
   }
   const onTouchEnd = (e) => {
+    e.stopPropagation();
     if(touchDelta > SWIPE_SENSITIVITY)
       getNewTopic();
-    if(touchDelta < - SWIPE_SENSITIVITY)
-      console.log('Swiped Right')
+    if(touchDelta < -SWIPE_SENSITIVITY)
+      swipeRight();
 
     console.log(touchDelta/SWIPE_SENSITIVITY)
     setTouchDelta(0);
@@ -159,10 +163,11 @@ export default function IndexPage() {
     setIsDragging(true);
   }
   const onMouseEnd = (e) => {
+    e.stopPropagation();
     if(touchDelta > SWIPE_SENSITIVITY)
       getNewTopic();
-    if(touchDelta < - SWIPE_SENSITIVITY)
-      console.log('Swiped Right')
+    if(touchDelta < -SWIPE_SENSITIVITY)
+      swipeRight();
 
     console.log(touchDelta/SWIPE_SENSITIVITY)
     setIsDragging(false);
@@ -177,6 +182,13 @@ export default function IndexPage() {
   const getNewTopic = async () => {
     const topicId = await dispatch(getOneTopic());
     setTopic(topicId)
+  }
+
+  const swipeRight = async () => {
+    const conversationId = await dispatch(makeConversationConnection(topic))
+    console.log('***MADE CONNECTION WITH', conversationId)
+    setForceConversation(conversationId)
+    history.push(`/conversations`)
   }
 
   useEffect(() => {

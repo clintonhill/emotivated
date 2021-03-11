@@ -48,6 +48,7 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [forceConversation, setForceConversation] = useState(null)
   const [userTheme, setUserTheme] = useState(mainTheme)
   const dispatch = useDispatch();
 
@@ -89,7 +90,7 @@ function App() {
           <User />
         </ProtectedRoute>
         <Route path='/conversations' exact>
-          <ConversationPage />
+          <ConversationPage forceConversation={forceConversation} setForceConversation={setForceConversation}/>
         </Route>
         <ProtectedRoute path='/profile/:userId' exact={true} authenticated={authenticated}>
           <ProfilePage />
@@ -98,7 +99,7 @@ function App() {
           <NewEmotivation />
         </ProtectedRoute>
         <Route path="/" exact={true} authenticated={authenticated}>
-          <IndexPage />
+          <IndexPage setForceConversation={setForceConversation}/>
         </Route>
         <Route>
           <h1>404</h1>
