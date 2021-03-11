@@ -100,8 +100,12 @@ const SendButton = styled.button`
     cursor: pointer;
   }
 `;
-
-const socket = io();
+let socket;
+if(process.env.NODE_ENV === 'production') {
+  socket = io('https://emotivated.herokuapp.com');
+} else {
+  socket = io();
+}
 
 export default function ConversationPage({forceConversation, setForceConversation}) {
   const [currentMessage, setCurrentMessage] = useState('');
