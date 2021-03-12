@@ -21,7 +21,6 @@ from .config import Config
 
 app = Flask(__name__)
 
-socketio = SocketIO(app)
 
 # Setup login manager
 login = LoginManager(app)
@@ -48,6 +47,7 @@ Migrate(app, db)
 # Application Security
 CORS(app)
 
+socketio = SocketIO(app, cors_allowed_origins='*')
 # Since we are deploying with Docker and Flask,
 # we won't be using a buildpack when we deploy to Heroku.
 # Therefore, we need to make sure that in production any
@@ -91,8 +91,8 @@ def handle_connect(data):
     user_id = data
     if user_id not in users or users[user_id] != request.sid:
         users[user_id] = request.sid
-    emit('connection_event', users[user_id], broadcast=True)
-    print('User join ' + str(users[user_id]))
+        emit('connection_event', users[user_id], broadcast=True)
+        print('User join ' + str(users[user_id]))
 
 if(__name__ == '__main__'):
     socketio.run(app)

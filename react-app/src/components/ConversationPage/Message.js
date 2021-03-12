@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   display: grid;
 `;
 const UserName = styled.span`
-  justify-self: ${props => props.user == 'You' ? 'end' : 'start'};
+  justify-self: ${props => props.user === 'You' ? 'end' : 'start'};
 `;
 const TextContainer = styled.div`
   background-color: ${props => props.theme.backgroundColor};
@@ -15,8 +15,8 @@ const TextContainer = styled.div`
   padding: 2px;
   border: 2px black solid;
   width: 48%;
-  justify-self: ${props => props.user == 'You' ? 'end' : 'start'};
-  border-radius: ${props => props.user == 'You' ? '10px 0 0 10px' : '0 10px 10px 0'};
+  justify-self: ${props => props.user === 'You' ? 'end' : 'start'};
+  border-radius: ${props => props.user === 'You' ? '10px 0 0 10px' : '0 10px 10px 0'};
   transition: all .5s ease;
 `;
 

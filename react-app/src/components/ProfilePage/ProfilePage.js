@@ -72,15 +72,14 @@ export default function ProfilePage() {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const session = useSelector(state => state.session)
-  let numId = userId == 'me' ? session.id : userId;
-  let user = useSelector(state => state.user[numId])
+  let user = useSelector(state => state.user[userId === 'me' ? session.id : userId])
   let stickers = useSelector(state => state.sticker)
   let allStickers = useRef();;
 
   useEffect(() => {
-    numId = userId == 'me' ? session.id : userId;
+    let numId = userId === 'me' ? session.id : userId;
     dispatch(getProfileUser(numId))
-  }, [dispatch, numId, userId])
+  }, [dispatch, userId, session.id])
 
   useEffect(() => {
     dispatch(getAllStickers())
