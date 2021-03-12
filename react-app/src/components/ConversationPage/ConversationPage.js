@@ -77,7 +77,7 @@ const ChatInput = styled.textarea`
 `;
 
 const EndContainer = styled.div`
-  display: ${props => props.activeConversation ? "flex": "none"};
+  display: ${props => props.activeConversation ? "flex" : "none"};
   justify-content: space-between;
   height: 20px;
   align-items: center;
@@ -100,14 +100,17 @@ const SendButton = styled.button`
     cursor: pointer;
   }
 `;
-let socket;
-if(process.env.NODE_ENV === 'production') {
-  socket = io('https://emotivated.herokuapp.com');
-} else {
-  socket = io();
-}
 
-export default function ConversationPage({forceConversation, setForceConversation}) {
+let socket;
+const establishSocket = () => {
+  if (process.env.NODE_ENV === 'production') {
+    socket = io('https://emotivated.herokuapp.com');
+  } else {
+    socket = io();
+  }
+  return socket;
+}
+export default function ConversationPage({ forceConversation, setForceConversation }) {
   const [currentMessage, setCurrentMessage] = useState('');
   const [activeConversation, setActiveConversation] = useState(null);
 
@@ -117,8 +120,13 @@ export default function ConversationPage({forceConversation, setForceConversatio
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    establishSocket()
+  }, [])
+
+
   const onSend = () => {
-    socket.emit('client_message', JSON.stringify({content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
+    socket.emit('client_message', JSON.stringify({ content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
     setCurrentMessage('');
   }
 
@@ -143,7 +151,7 @@ export default function ConversationPage({forceConversation, setForceConversatio
 
   //If the id is set, open that conversation
   useEffect(() => {
-    if(forceConversation) {
+    if (forceConversation) {
       setActiveConversation(forceConversation);
       setForceConversation(null)
     }
@@ -156,46 +164,46 @@ export default function ConversationPage({forceConversation, setForceConversatio
   }, [dispatch, activeConversation])
 
   const getNickname = (conversation) => {
-    if(conversation.current_is_author) {
+    if (conversation.current_is_author) {
       return conversation.topic.author_nickname;
     }
     return conversation.responder_nickname;
   }
 
   return (
-      <PageWrapper>
-        <ChatComponent>
-          <ChatList>
-            {conversations && Object.values(conversations).map(conversation => <User
+    <PageWrapper>
+      <ChatComponent>
+        <ChatList>
+          {conversations && Object.values(conversations).map(conversation => <User
             user={getNickname(conversation)}
             id={conversation.id}
             setActiveConversation={setActiveConversation}
-            />)}
-          </ChatList>
-          <Chat>
-            {activeConversation && conversations && getNickname(conversations[activeConversation])}
-            <ConversationPane>
-              {activeConversation && conversations[activeConversation] && <TopicContainer>
-                <h3>{conversations[activeConversation].topic.name}</h3>
-                <h5>{conversations[activeConversation].topic.description}</h5>
-              </TopicContainer>}
-              {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message message={message}/>)}
-              <EndContainer activeConversation={activeConversation}>
-                <h6>You can always end a conversation. Once you end the conversation you can choose if you want to give kudos to your chat partner or not.</h6>
-                <button>End Conversation</button>
-              </EndContainer>
-            </ConversationPane>
-            <UserInputArea>
-              <ChatInput
+          />)}
+        </ChatList>
+        <Chat>
+          {activeConversation && conversations && getNickname(conversations[activeConversation])}
+          <ConversationPane>
+            {activeConversation && conversations[activeConversation] && <TopicContainer>
+              <h3>{conversations[activeConversation].topic.name}</h3>
+              <h5>{conversations[activeConversation].topic.description}</h5>
+            </TopicContainer>}
+            {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message message={message} />)}
+            <EndContainer activeConversation={activeConversation}>
+              <h6>You can always end a conversation. Once you end the conversation you can choose if you want to give kudos to your chat partner or not.</h6>
+              <button>End Conversation</button>
+            </EndContainer>
+          </ConversationPane>
+          <UserInputArea>
+            <ChatInput
               value={currentMessage}
-              onChange={(e)=> setCurrentMessage(e.target.value)}
+              onChange={(e) => setCurrentMessage(e.target.value)}
               disabled={!activeConversation}
-              />
-              <SendButton disabled={!activeConversation} onClick={onSend} />
-            </UserInputArea>
-          </Chat>
-        </ChatComponent>
+            />
+            <SendButton disabled={!activeConversation} onClick={onSend} />
+          </UserInputArea>
+        </Chat>
+      </ChatComponent>
 
-      </PageWrapper>
+    </PageWrapper>
   )
 }
