@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import Message from './Message'
 import User from './User'
 import { io } from 'socket.io-client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getChatPartners, getConversationMessages, addMessageToConversation } from '../../store/conversations';
 
@@ -111,6 +111,7 @@ const establishSocket = () => {
 export default function ConversationPage({ forceConversation, setForceConversation }) {
   const [currentMessage, setCurrentMessage] = useState('');
   const [activeConversation, setActiveConversation] = useState(null);
+  const endRef = useRef(null);
 
   const user = useSelector(state => state.session);
   const conversations = useSelector(state => state.conversations?.conversations)
@@ -127,6 +128,10 @@ export default function ConversationPage({ forceConversation, setForceConversati
     socket.emit('client_message', JSON.stringify({ content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
     setCurrentMessage('');
   }
+
+  useEffect(() => {
+    endRef.current.scrollIntoView({behavior: 'smooth'})
+  })
 
   useEffect(() => {
     socket.on('message', msg => {
@@ -188,7 +193,7 @@ export default function ConversationPage({ forceConversation, setForceConversati
               <h5>{conversations[activeConversation].topic.description}</h5>
             </TopicContainer>}
             {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message key={message.id} message={message} />)}
-            <EndContainer activeConversation={activeConversation}>
+            <EndContainer activeConversation={activeConversation} ref={endRef}>
               <h6>You can always end a conversation. Once you end the conversation you can choose if you want to give kudos to your chat partner or not.</h6>
               <button>End Conversation</button>
             </EndContainer>
