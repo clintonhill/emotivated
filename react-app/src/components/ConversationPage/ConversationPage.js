@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import EndContainer from './EndContainer'
 import Message from './Message'
 import User from './User'
 import { io } from 'socket.io-client'
@@ -74,12 +75,6 @@ const ChatInput = styled.textarea`
   padding: 3px;
 `;
 
-const EndContainer = styled.div`
-  display: ${props => props.activeConversation ? "flex" : "none"};
-  justify-content: space-between;
-  height: 20px;
-  align-items: center;
-`;
 
 const SendButton = styled.button`
   background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/25B6.svg");
@@ -130,7 +125,7 @@ export default function ConversationPage({ forceConversation, setForceConversati
   }
 
   useEffect(() => {
-    endRef.current.scrollIntoView({behavior: 'smooth'})
+    endRef?.current?.scrollIntoView({behavior: 'smooth'})
   })
 
   useEffect(() => {
@@ -193,10 +188,8 @@ export default function ConversationPage({ forceConversation, setForceConversati
               <h5>{conversations[activeConversation].topic.description}</h5>
             </TopicContainer>}
             {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message key={message.id} message={message} />)}
-            <EndContainer activeConversation={activeConversation} ref={endRef}>
-              <h6>You can always end a conversation. Once you end the conversation you can choose if you want to give kudos to your chat partner or not.</h6>
-              <button>End Conversation</button>
-            </EndContainer>
+            <EndContainer activeConversation={activeConversation} />
+            <div ref={endRef}/>
           </ConversationPane>
           <UserInputArea>
             <ChatInput
