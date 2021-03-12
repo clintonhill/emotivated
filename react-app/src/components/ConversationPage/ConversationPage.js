@@ -1,12 +1,10 @@
 import styled from 'styled-components'
 import Message from './Message'
 import User from './User'
-import faker from 'faker'
 import { io } from 'socket.io-client'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getChatPartners, getConversationMessages, addMessageToConversation } from '../../store/conversations';
-import { useHistory, useParams } from 'react-router'
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -142,7 +140,7 @@ export default function ConversationPage({ forceConversation, setForceConversati
       dispatch(addMessageToConversation(payload));
     })
     socket.on('connection_event', (msg) => console.log(`Connected as ${msg}`))
-  }, [])
+  }, [dispatch])
 
   //Get users that the current user is in conversations with.
   useEffect(() => {
@@ -155,13 +153,14 @@ export default function ConversationPage({ forceConversation, setForceConversati
       setActiveConversation(forceConversation);
       setForceConversation(null)
     }
-  }, [forceConversation])
+  }, [forceConversation, setForceConversation, setActiveConversation])
 
   //Get the conversation of the active user
   useEffect(() => {
+    if(!activeConversation) return;
     dispatch(getConversationMessages(activeConversation))
     socket.emit('connection', user.id)
-  }, [dispatch, activeConversation])
+  }, [dispatch, activeConversation, user.id])
 
   const getNickname = (conversation) => {
     if (conversation.current_is_author) {
@@ -178,6 +177,7 @@ export default function ConversationPage({ forceConversation, setForceConversati
             user={getNickname(conversation)}
             id={conversation.id}
             setActiveConversation={setActiveConversation}
+            key={conversation.id}
           />)}
         </ChatList>
         <Chat>
@@ -187,7 +187,7 @@ export default function ConversationPage({ forceConversation, setForceConversati
               <h3>{conversations[activeConversation].topic.name}</h3>
               <h5>{conversations[activeConversation].topic.description}</h5>
             </TopicContainer>}
-            {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message message={message} />)}
+            {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message key={message.id} message={message} />)}
             <EndContainer activeConversation={activeConversation}>
               <h6>You can always end a conversation. Once you end the conversation you can choose if you want to give kudos to your chat partner or not.</h6>
               <button>End Conversation</button>

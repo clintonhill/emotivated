@@ -1,4 +1,3 @@
-import { color_palette } from 'openmoji';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components'
 

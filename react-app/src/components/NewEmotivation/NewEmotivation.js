@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
 import { postOneTopic } from '../../store/topics';
 
-const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
+// const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
 const PageWrapper = styled.div`
   width: 100vw;
@@ -80,7 +80,7 @@ const generateNickname = () => {
 
 export default function NewEmotivation() {
 
-  const [nickname, setNickname] = useState(null);
+  const [nickname, setNickname] = useState('');
   const [topic, setTopic] = useState('');
   const [description, setDescription] = useState('');
 
@@ -118,14 +118,14 @@ export default function NewEmotivation() {
           <input disabled={true} value={nickname}/>
         </FormRow>
         <FormRow>
-          <label for='topic'>Topic</label>
+          <label htmlFor='topic'>Topic</label>
           <input
           name='topic'
           value={topic}
           onChange={e => setTopic(e.target.value)}/>
         </FormRow>
         <FormRow>
-          <label for='details'>Details</label>
+          <label htmlFor='details'>Details</label>
           <textarea
           name='details'
           value={description}
