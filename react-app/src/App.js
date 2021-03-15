@@ -19,6 +19,7 @@ import ProfilePage from "./components/ProfilePage";
 
 const GlobalStyle = createGlobalStyle`
   body {
+    font-family: 'Rosario', sans-serif;
     background-color: ${props => props.theme.backgroundColor};
     color: ${props => props.theme.primaryText };
     transition: all .5s ease-in;
