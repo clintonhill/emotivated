@@ -118,6 +118,15 @@ const CommentImage = styled.div`
     background-repeat: no-repeat;
 `;
 
+const DemoPicture = styled.div`
+  width: 800px;
+  height: 800px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("${props => props.src }");
+`;
+
 const example = {
   topic: 'This is a topic that I feel down about, or need general advice on.',
   body: `Something really frustrating happened, and this is the contents of the post. I really would like some advice about this super frustrating thing. Thank you all for your kind words, and I'm looking forward to chatting with you all. You're all great. Sorry for rambling.`,
@@ -125,7 +134,7 @@ const example = {
   comments: 4
 }
 
-export default function IndexPage({setForceConversation}) {
+export default function IndexPage({setForceConversation, authenticated}) {
 
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
@@ -212,8 +221,10 @@ export default function IndexPage({setForceConversation}) {
     }
   }
 
+
   return (
     <PageWrapper>
+      {authenticated &&
       <MainComponent>
         <p>Swipe right to eMotivate!</p>
         <SwipeWrapper
@@ -253,6 +264,19 @@ export default function IndexPage({setForceConversation}) {
         />
         </SwipeWrapper>
       </MainComponent>
+      }
+      {!authenticated &&
+      <MainComponent>
+        <h3>Welcome to eMotivated!</h3>
+        <h4>How it works</h4>
+        <h6>Users can create topics about something that they're struggling with.</h6>
+        <DemoPicture src={'https://i.gyazo.com/7e919009bd623ca22618059c79ac1b44.png'} />
+        <h6>Other users can browse these topics, and swipe right to start a conversation with that person.</h6>
+        <DemoPicture src={'https://i.gyazo.com/a298a0b6f76e6c7374c2904a03853fb3.png'} />
+        <h6>After a successful discussion, the topic creator can reward their conversation partner for being positive.</h6>
+        <DemoPicture src={'https://i.gyazo.com/4a41bc76a0daed86cc873a5ee2b109c5.png'} />
+        <h5>Create an account to get started.</h5>
+      </MainComponent>}
     </PageWrapper>
   )
 }
