@@ -5,6 +5,8 @@ const END_STATE_NONE = 0;
 const END_STATE_GIVE_KUDOS = 1;
 const END_STATE_PUBLISH = 2;
 
+const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
+
 const Wrapper = styled.div`
   display: flex;
   height: 10%;
@@ -35,10 +37,20 @@ const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  button {
-    height: 50%;
-  }
 `;
+
+const RatingButton = styled.button`
+  background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/${props=>props.hexcode}");
+  color: ${props => props.theme.primaryText};
+  height: 35px;
+  width: 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: white;
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+  }`;
 
 const PublishAfter = styled.div`
   display: flex;
@@ -60,8 +72,8 @@ export default function EndContainer() {
       {endState === END_STATE_GIVE_KUDOS  && <DisconnectAfter>
         <h6>How was this conversation? Clicking the smile will give your chat partner Kudos, and a new sticker.</h6>
         <RatingContainer>
-          <button onClick={() => setEndState(2)}>:)</button>
-          <button onClick={() => setEndState(2)}>:(</button>
+          <RatingButton hexcode={'1F641.svg'} onClick={() => setEndState(2)} />
+          <RatingButton hexcode={'1F642.svg'} onClick={() => setEndState(2)} />
         </RatingContainer>
       </DisconnectAfter>}
       {endState === END_STATE_PUBLISH &&

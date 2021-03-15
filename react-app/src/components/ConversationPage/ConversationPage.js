@@ -125,7 +125,7 @@ export default function ConversationPage({ forceConversation, setForceConversati
   }
 
   useEffect(() => {
-    endRef?.current?.scrollIntoView({behavior: 'smooth'})
+    activeConversation && endRef?.current?.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'start' })
   })
 
   useEffect(() => {
@@ -187,8 +187,8 @@ export default function ConversationPage({ forceConversation, setForceConversati
               <h3>{conversations[activeConversation].topic.name}</h3>
               <h5>{conversations[activeConversation].topic.description}</h5>
             </TopicContainer>}
-            {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message key={message.id} message={message} />)}
-            <EndContainer activeConversation={activeConversation} />
+            {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message key={message.id} message={message} nickname={getNickname(conversations[activeConversation])} />)}
+            {activeConversation && <EndContainer activeConversation={activeConversation} /> }
             <div ref={endRef}/>
           </ConversationPane>
           <UserInputArea>

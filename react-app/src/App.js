@@ -98,8 +98,8 @@ function App() {
         <ProtectedRoute path='/new' exact authenticated={authenticated}>
           <NewEmotivation />
         </ProtectedRoute>
-        <Route path="/" exact={true} authenticated={authenticated}>
-          <IndexPage setForceConversation={setForceConversation}/>
+        <Route path="/" exact={true}>
+          <IndexPage setForceConversation={setForceConversation} authenticated={authenticated}/>
         </Route>
         <Route>
           <h1>404</h1>

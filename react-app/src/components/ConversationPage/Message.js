@@ -20,20 +20,16 @@ const TextContainer = styled.div`
   transition: all .5s ease;
 `;
 
-export default function Message({message}) {
+export default function Message({message}, {nickname}) {
 
   const conversations = useSelector(state => state.conversations?.conversations)
 
   const user = message => {
     if (message.current_is_author)
       return 'You';
-    else {
-      for(let conversation in conversations) {
-        if(conversations[conversation].id === message.conversation_id) {
-          return conversations[conversation].responder_nickname;
-        }
-      }
-    }
+    else
+      return nickname
+
     return 'Unknown'
   }
   const current = user(message)
