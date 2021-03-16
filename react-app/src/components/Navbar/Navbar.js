@@ -105,7 +105,7 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
           </>}
           { authenticated && <>
             <NavLink className='tab' exact to='/browse' activeClassName='active'>
-              Browse
+              Published
             </NavLink>
             <NavLink className='tab' exact to='/new' activeClassName='active'>
               New eMotivation
