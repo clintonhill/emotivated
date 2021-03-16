@@ -2,19 +2,13 @@ import styled from 'styled-components'
 import EndContainer from './EndContainer'
 import Message from './Message'
 import User from './User'
+import { PageWrapper } from '../styles'
 import { io } from 'socket.io-client'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getChatPartners, getConversationMessages, addMessageToConversation } from '../../store/conversations';
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
-
-const PageWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-`;
 
 const ChatComponent = styled.div`
   width: 80%;

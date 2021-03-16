@@ -6,26 +6,9 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileUser } from '../../store/user';
 import { getAllStickers } from '../../store/stickers';
+import { MainComponent, PageWrapper } from '../styles'
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
-
-const PageWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-`;
-
-const MainComponent = styled.div`
-  width: 80%;
-  height: 80%;
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  border-radius: 10px 10px 0 0;
-  box-shadow: 2px 2px 5px gray;
-  background-color: #E8BA71;
-`;
 
 const ProfileContainer = styled.div`
   height: 100%;
