@@ -15,6 +15,7 @@ import { authenticate } from "./services/auth";
 import { setUser } from './store/session'
 import { useDispatch } from "react-redux";
 import ProfilePage from "./components/ProfilePage";
+import BrowsePage from "./components/BrowsePage";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -84,13 +85,10 @@ function App() {
         <Route path="/sign-up" exact={true}>
           <SignUpForm authenticated={authenticated} setAuthenticated={setAuthenticated} />
         </Route>
-        <ProtectedRoute path="/users" exact={true} authenticated={authenticated}>
-          <UsersList/>
-        </ProtectedRoute>
         <ProtectedRoute path="/users/:userId" exact={true} authenticated={authenticated}>
           <User />
         </ProtectedRoute>
-        <Route path='/conversations' exact>
+        <Route path='/conversations' exact authenticated={authenticated}>
           <ConversationPage forceConversation={forceConversation} setForceConversation={setForceConversation}/>
         </Route>
         <ProtectedRoute path='/profile/:userId' exact={true} authenticated={authenticated}>
@@ -98,6 +96,9 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path='/new' exact authenticated={authenticated}>
           <NewEmotivation />
+        </ProtectedRoute>
+        <ProtectedRoute path='/browse' exact authenticated={authenticated}>
+          <BrowsePage />
         </ProtectedRoute>
         <Route path="/" exact={true}>
           <IndexPage setForceConversation={setForceConversation} authenticated={authenticated}/>
