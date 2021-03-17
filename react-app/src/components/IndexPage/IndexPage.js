@@ -33,7 +33,7 @@ const MainComponent = styled.div`
 const SwipeWrapper = styled.div`
   display: flex;
   height: 100%;
-  min-width: 80%;
+  width: 80%;
   justify-content: center;
   align-items: center;
   -webkit-touch-callout: none;
