@@ -17,6 +17,9 @@ const ChatComponent = styled.div`
   margin-top: 30px;
   border-radius: 10px 10px 0 0;
   box-shadow: 2px 2px 5px gray;
+  @media(max-width:800px) {
+    width: 100%;
+  }
 `;
 
 const ChatList = styled.div`
@@ -26,7 +29,9 @@ const ChatList = styled.div`
   border-radius: 10px 10px 0 0;
   margin-right: 10px;
   overflow-y: scroll;
-  overflow-x: hidden;
+  @media(max-width:800px) {
+    margin-right: 5px;
+  }
 `;
 
 const Chat = styled.div`
