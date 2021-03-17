@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { getOneTopic} from '../../store/topics'
+import { getOneTopic } from '../../store/topics'
 import { makeConversationConnection } from '../../store/conversations'
 import styled from 'styled-components'
 import { PageWrapper, MainComponent } from '../styles'
@@ -20,13 +20,21 @@ const SwipeWrapper = styled.div`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  @media(max-width:800px) {
+    width: 90%;
+  }
+  @media(max-width:600px) {
+    width: 100%;
+  }
 `;
 
 const SwipeComponent = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
-  height: 75%;
+  min-width: 15rem;
+  min-height: 75%;
   align-items: flex-start;
   justify-content: space-between;
   padding: 20px;
@@ -43,9 +51,15 @@ const SwipeComponent = styled.div`
     -ms-user-select: none;
     user-select: none;
   }
+  @media(max-width:800px) {
+    width: 80%;
+  }
+  @media(max-width:600px) {
+    width: 90%;
+  }
 `;
 
-const SwipeRegionLeft = styled.div.attrs(props=> ({
+const SwipeRegionLeft = styled.div.attrs(props => ({
   style: {
     filter: `opacity(${props.fill}%)`
   }
@@ -63,7 +77,7 @@ const SwipeRegionLeft = styled.div.attrs(props=> ({
   user-select: none;
 `;
 
-const SwipeRegionRight = styled.div.attrs(props=> ({
+const SwipeRegionRight = styled.div.attrs(props => ({
   style: {
     filter: `opacity(${props.fill}%)`
   }
@@ -103,7 +117,7 @@ const DemoPicture = styled.div`
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("${props => props.src }");
+  background-image: url("${props => props.src}");
 `;
 
 const example = {
@@ -113,7 +127,7 @@ const example = {
   comments: 4
 }
 
-export default function IndexPage({setForceConversation, authenticated}) {
+export default function IndexPage({ setForceConversation, authenticated }) {
 
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
@@ -127,21 +141,21 @@ export default function IndexPage({setForceConversation, authenticated}) {
   const SWIPE_SENSITIVITY = 200;
 
   const onTouchStart = (e) => {
-    if(!e.targetTouches) return;
+    if (!e.targetTouches) return;
     setTouchStart(e.targetTouches[0].clientX);
   }
   const onTouchEnd = (e) => {
     e.stopPropagation();
-    if(touchDelta > SWIPE_SENSITIVITY)
+    if (touchDelta > SWIPE_SENSITIVITY)
       getNewTopic();
-    if(touchDelta < -SWIPE_SENSITIVITY)
+    if (touchDelta < -SWIPE_SENSITIVITY)
       swipeRight();
 
-    console.log(touchDelta/SWIPE_SENSITIVITY)
+    console.log(touchDelta / SWIPE_SENSITIVITY)
     setTouchDelta(0);
   }
   const onTouchMove = (e) => {
-    if(!e.targetTouches) return;
+    if (!e.targetTouches) return;
     setTouchEnd(e.targetTouches[0].clientX);
     setTouchDelta(touchStart - touchEnd);
   }
@@ -152,17 +166,17 @@ export default function IndexPage({setForceConversation, authenticated}) {
   }
   const onMouseEnd = (e) => {
     e.stopPropagation();
-    if(touchDelta > SWIPE_SENSITIVITY)
+    if (touchDelta > SWIPE_SENSITIVITY)
       getNewTopic();
-    if(touchDelta < -SWIPE_SENSITIVITY)
+    if (touchDelta < -SWIPE_SENSITIVITY)
       swipeRight();
 
-    console.log(touchDelta/SWIPE_SENSITIVITY)
+    console.log(touchDelta / SWIPE_SENSITIVITY)
     setIsDragging(false);
     setTouchDelta(0);
   }
   const onMouseMove = (e) => {
-    if(!isDragging) return;
+    if (!isDragging) return;
     setTouchEnd(e.clientX);
     setTouchDelta(touchStart - touchEnd);
   }
@@ -185,15 +199,15 @@ export default function IndexPage({setForceConversation, authenticated}) {
 
   const determineFill = isRight => {
     const base = 10;
-    const percentageFilled = touchDelta/SWIPE_SENSITIVITY*100
-    if(isRight) {
-      if(percentageFilled < 0) {
+    const percentageFilled = touchDelta / SWIPE_SENSITIVITY * 100
+    if (isRight) {
+      if (percentageFilled < 0) {
         return Math.max(10, Math.abs(percentageFilled));
       }
       return base;
     }
     else {
-      if(percentageFilled > 0) {
+      if (percentageFilled > 0) {
         return Math.max(10, percentageFilled);
       }
       return base;
@@ -202,60 +216,68 @@ export default function IndexPage({setForceConversation, authenticated}) {
 
 
   return (
-    <PageWrapper>
+    <PageWrapper
+      onTouchEnd={onTouchEnd}
+      onTouchMove={onTouchMove}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseEnd}>
       {authenticated &&
-      <MainComponent>
-        <p>Swipe right to eMotivate!</p>
-        <SwipeWrapper
-        onTouchEnd={onTouchEnd}
-        onTouchMove={onTouchMove}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseEnd}
-        >
-        <SwipeRegionLeft
-        fill={determineFill(false)}
+        <MainComponent
           onTouchEnd={onTouchEnd}
           onTouchMove={onTouchMove}
           onMouseMove={onMouseMove}
-          onMouseUp={onMouseEnd}
-          />
-        <SwipeComponent
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-          onTouchMove={onTouchMove}
-          onMouseDown={onMouseStart}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseEnd}
-        >
-          {topic && <h6>{topicState[topic].author_nickname}</h6>}
-          {topic && <h3>{topicState[topic].name}</h3>}
-          {topic && <h5>{topicState[topic].description}</h5> }
-          <CommentsContainer>
-            <CommentImage />
-            <h6>{example.comments}</h6>
-          </CommentsContainer>
-        </SwipeComponent>
-        <SwipeRegionRight fill={determineFill(true)}
-        onTouchEnd={onTouchEnd}
-        onTouchMove={onTouchMove}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseEnd}
-        />
-        </SwipeWrapper>
-      </MainComponent>
+          onMouseUp={onMouseEnd}>
+          <p>Swipe right to eMotivate!</p>
+          <SwipeWrapper
+            onTouchEnd={onTouchEnd}
+            onTouchMove={onTouchMove}
+            onMouseMove={onMouseMove}
+            onMouseUp={onMouseEnd}
+          >
+            <SwipeRegionLeft
+              fill={determineFill(false)}
+              onTouchEnd={onTouchEnd}
+              onTouchMove={onTouchMove}
+              onMouseMove={onMouseMove}
+              onMouseUp={onMouseEnd}
+            />
+            <SwipeComponent
+              onTouchStart={onTouchStart}
+              onTouchEnd={onTouchEnd}
+              onTouchMove={onTouchMove}
+              onMouseDown={onMouseStart}
+              onMouseMove={onMouseMove}
+              onMouseUp={onMouseEnd}
+            >
+              {topic && <h6>{topicState[topic].author_nickname}</h6>}
+              {topic && <h3>{topicState[topic].name}</h3>}
+              {topic && <h5>{topicState[topic].description}</h5>}
+              <CommentsContainer>
+                <CommentImage />
+                <h6>{example.comments}</h6>
+              </CommentsContainer>
+            </SwipeComponent>
+            <SwipeRegionRight fill={determineFill(true)}
+              onTouchEnd={onTouchEnd}
+              onTouchMove={onTouchMove}
+              onMouseMove={onMouseMove}
+              onMouseUp={onMouseEnd}
+            />
+          </SwipeWrapper>
+        </MainComponent>
       }
       {!authenticated &&
-      <MainComponent>
-        <h3>Welcome to eMotivated!</h3>
-        <h4>How it works</h4>
-        <h6>Users can create topics about something that they're struggling with.</h6>
-        <DemoPicture src={'https://i.gyazo.com/7e919009bd623ca22618059c79ac1b44.png'} />
-        <h6>Other users can browse these topics, and swipe right to start a conversation with that person.</h6>
-        <DemoPicture src={'https://i.gyazo.com/a298a0b6f76e6c7374c2904a03853fb3.png'} />
-        <h6>After a successful discussion, the topic creator can reward their conversation partner for being positive.</h6>
-        <DemoPicture src={'https://i.gyazo.com/4a41bc76a0daed86cc873a5ee2b109c5.png'} />
-        <h5>Create an account to get started.</h5>
-      </MainComponent>}
+        <MainComponent>
+          <h3>Welcome to eMotivated!</h3>
+          <h4>How it works</h4>
+          <h6>Users can create topics about something that they're struggling with.</h6>
+          <DemoPicture src={'https://i.gyazo.com/7e919009bd623ca22618059c79ac1b44.png'} />
+          <h6>Other users can browse these topics, and swipe right to start a conversation with that person.</h6>
+          <DemoPicture src={'https://i.gyazo.com/a298a0b6f76e6c7374c2904a03853fb3.png'} />
+          <h6>After a successful discussion, the topic creator can reward their conversation partner for being positive.</h6>
+          <DemoPicture src={'https://i.gyazo.com/4a41bc76a0daed86cc873a5ee2b109c5.png'} />
+          <h5>Create an account to get started.</h5>
+        </MainComponent>}
     </PageWrapper>
   )
 }

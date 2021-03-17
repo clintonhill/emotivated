@@ -1,8 +1,9 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import LogoutButton from '../auth/LogoutButton';
 import styled from 'styled-components'
 import { mainTheme, darkTheme } from '../../theme'
 import { useSelector } from 'react-redux';
+import { useWindowWidth } from '../helper'
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -44,6 +45,12 @@ const BottomContainer = styled.div`
   border-radius: 0 0 5px 5px;
 `;
 
+const DropDown = styled.select`
+width: 100%;
+height: 40px;
+font-size: large;
+`;
+
 const Logo = styled.div`
   background-image: url("${process.env.PUBLIC_URL}${props => props.theme.logoPath}");
   width: 175px;
@@ -68,6 +75,9 @@ const ThemeButton = styled.input`
 
 const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) => {
 
+  const width = useWindowWidth();
+  const history = useHistory();
+
   const toggleTheme = () => {
     let newTheme = darkTheme;
     if(userTheme === darkTheme)
@@ -85,13 +95,13 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
           <Logo />
           <TopLeft>
             {authenticated && <>
-            Welcome,<Username>{username}</Username>
+            {width >=400 && <span>Welcome,</span>}<Username>{username}</Username>
             <LogoutButton setAuthenticated={setAuthenticated} />
             </>}
             <ThemeButton type='button' onClick={toggleTheme}/>
           </TopLeft>
       </TopContainer>
-      <BottomContainer>
+      {width >= 600 && <BottomContainer>
           <NavLink className='tab' exact to="/" activeClassName='active'>
             Home
           </NavLink>
@@ -117,7 +127,15 @@ const Navbar = ({ authenticated, setAuthenticated, userTheme, setUserTheme }) =>
               Profile
             </NavLink>
           </> }
-          </BottomContainer>
+          </BottomContainer> }
+          {width < 600 && <DropDown onChange={(e => history.push(e.target.value))}>
+            <option value='#'>--Navigation--</option>
+            <option value='/'>Home</option>
+            <option value='/browse'>Published</option>
+            <option value='/new'>New eMotivation</option>
+            <option value='/conversations'>Conversations</option>
+            <option value='/profile/me'>Profile</option>
+          </DropDown> }
           </NavWrapper>
   );
 }
