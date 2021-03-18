@@ -1,9 +1,26 @@
 const SET_ONE_TOPIC = 'topics/SET_ONE_TOPIC'
+const SET_TOPICS = 'topics/SET_TOPICS'
 
 export const setTopic = (topic) => {
   return {
       type: SET_ONE_TOPIC,
       payload: topic
+  }
+}
+
+export const setTopics = (topics) => {
+  return {
+    type: SET_TOPICS,
+    payload: topics
+  }
+}
+
+export const getTopicsPage = (page) => async dispatch => {
+  const response = await fetch(`/api/topics/page/${page}`)
+  if(response.ok) {
+    const topics = await response.json();
+    dispatch(setTopics(topics))
+    console.log(topics)
   }
 }
 
@@ -38,6 +55,11 @@ const topicReducer = (state = {}, action) => {
       case SET_ONE_TOPIC:
           newState[action.payload.id] = action.payload;
           return newState;
+      case SET_TOPICS:
+        for(let topic of action.payload['topics']) {
+          newState[topic.id] = topic
+        }
+        return newState;
       default:
         return state;
   }

@@ -1,6 +1,10 @@
+import {useState, useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import styled from 'styled-components'
+import VisibilitySensor from 'react-visibility-sensor'
 import { MainComponent, PageWrapper } from '../styles'
 import TopicRow from './TopicRow'
+import {getTopicsPage} from '../../store/topics'
 
 const Topics = styled.div`
     width: 100%;
@@ -17,23 +21,37 @@ const Navigation = styled.div`
 `;
 
 export default function BrowsePage() {
+  const dispatch = useDispatch();
+  const [page, setPage] = useState(1);
+  const topics = useSelector(state => state.topics)
+
+  const nextPage = () => {
+    setPage((prev) => prev + 1);
+  }
+
+  const fetchTopicPage = (page) => {
+    dispatch(getTopicsPage(page))
+  }
+
+  function onChange(isVisible) {
+    if(isVisible) {
+      nextPage();
+    }
+  }
+
+  useEffect(() => {
+    fetchTopicPage(page)
+  }, [page])
+
   return (
     <PageWrapper>
       <MainComponent>
         <Topics>
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
-          <TopicRow />
+          {Object.values(topics).map(topic => <TopicRow topic={topic}/>)}
+
+          <VisibilitySensor onChange={onChange}>
+            <div>.</div>
+          </VisibilitySensor>
         </Topics>
         {/* <Navigation>
           <button>Prev</button>
