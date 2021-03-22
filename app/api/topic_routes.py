@@ -34,6 +34,13 @@ def postTopic():
   return {"errors": "Error!"}, 400
 
 
+@topic_routes.route('/page/<int:page>')
+def getTopicsPage(page):
+  topics = Topic.query.paginate(page, 10, False)
+  items = topics.items
+  return {"topics": [topic.to_published_dict() for topic in items]}
+
+
 @topic_routes.route('/random')
 def getRandomTopic():
   rand = db.session.query(Topic).order_by(func.random()).first()

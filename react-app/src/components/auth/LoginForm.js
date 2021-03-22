@@ -12,6 +12,10 @@ const MainWrapper = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
+  a {
+    cursor: pointer;
+    margin-top: 5px;
+  }
 `;
 
 const WelcomeMessage = styled.p`
@@ -50,6 +54,11 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
     return <Redirect to="/" />;
   }
 
+  const demoLogin = () => {
+    setEmail('demo@aa.io')
+    setPassword('password')
+  }
+
   return (
     <form onSubmit={onLogin}>
       <MainWrapper>
@@ -84,6 +93,7 @@ const LoginForm = ({ authenticated, setAuthenticated }) => {
       </FormRow>
         <Button type="submit">Login</Button>
       </FormWrapper>
+      <a onClick={demoLogin}>Want to try the site as a demo user? Click here!</a>
       </MainWrapper>
     </form>
   );

@@ -17,6 +17,12 @@ export const MainComponent = styled.div`
   border-radius: 10px 10px 0 0;
   box-shadow: 2px 2px 5px gray;
   background-color: #E8BA71;
+  @media(max-width:800px) {
+    width: 90%;
+  }
+  @media(max-width: 600px) {
+    width: 100%;
+  }
   p {
     font-size: larger;
     font-weight: bold;

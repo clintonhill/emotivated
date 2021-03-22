@@ -26,3 +26,11 @@ class Topic(db.Model):
             "author_nickname": self.author_nickname,
             "current_is_author": current_user.id == self.author_id
         }
+
+    def to_published_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "author_nickname": self.author_nickname
+        }

@@ -25,17 +25,11 @@ const TopicWrapper = styled.div`
   }
 `;
 
-const dummy = {
-  topic: 'This is a topic that I feel down about, or need general advice on.',
-  body: `Something really frustrating happened, and this is the contents of the post. I really would like some advice about this super frustrating thing. Thank you all for your kind words, and I'm looking forward to chatting with you all. You're all great. Sorry for rambling.`,
-  username: 'Ignorant Ape',
-}
-
-export default function TopicRow() {
+export default function TopicRow({topic}) {
   return (
     <TopicWrapper>
-      <h5>{dummy.topic}</h5>
-      <h6>{dummy.body}</h6>
+      <h5>{topic.name}</h5>
+      <h6>{topic.description}</h6>
     </TopicWrapper>
   )
 }

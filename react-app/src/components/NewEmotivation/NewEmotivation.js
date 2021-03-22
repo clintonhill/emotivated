@@ -14,6 +14,9 @@ const FormRow = styled.div`
 
 const Form = styled.form`
   width: 50%;
+  @media(max-width:800px) {
+    width: 90%;
+  }
 `;
 
 const SubmitButton = styled.button`

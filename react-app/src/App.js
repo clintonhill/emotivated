@@ -24,6 +24,9 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${props => props.theme.backgroundColor};
     color: ${props => props.theme.primaryText };
     transition: all .5s ease-in;
+    padding: 0;
+    margin: 0;
+    border: 0;
   }
   .active {
     background-color: ${props => props.theme.accent};
@@ -40,6 +43,9 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: ${props => props.theme.primaryText};
     padding-top: 4px;
+    @media(max-width: 900px) {
+      font-size: smaller;
+    }
   }
   html {
     overflow: hidden;
