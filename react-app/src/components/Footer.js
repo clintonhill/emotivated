@@ -17,7 +17,7 @@ const Circle = styled.div`
   top: 50%;
   left: 50%;
   margin-right: -50%;
-  filter: blur(${props => props.open ? 0 : 8}px);
+  filter: blur(${props => props.open ? 0 : 8}px) opacity(${props => props.open ? 100:40}%);
   transform: translate(-50%, ${props => props.open ? -50:30}%);
   display:flex;
   align-items: center;
