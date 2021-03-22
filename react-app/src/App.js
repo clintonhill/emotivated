@@ -16,6 +16,7 @@ import { setUser } from './store/session'
 import { useDispatch } from "react-redux";
 import ProfilePage from "./components/ProfilePage";
 import BrowsePage from "./components/BrowsePage";
+import Footer from "./components/Footer";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -81,6 +82,7 @@ function App() {
       <ThemeProvider theme={ userTheme }>
       <GlobalStyle />
       <Navbar authenticated={authenticated} setAuthenticated={setAuthenticated} userTheme={userTheme} setUserTheme={setUserTheme} />
+      <Footer />
       <Switch>
         <Route path="/login" exact={true}>
           <LoginForm
