@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components'
 import { postOneTopic } from '../../store/topics';
@@ -67,6 +68,7 @@ export default function NewEmotivation() {
 
   const user = useSelector(state => state.session.id)
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     setNickname(generateNickname())
@@ -81,6 +83,7 @@ export default function NewEmotivation() {
       author_nickname: nickname
     }
     dispatch(postOneTopic(formData))
+    history.push('/');
   }
 
   return (

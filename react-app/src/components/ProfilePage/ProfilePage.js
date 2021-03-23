@@ -39,11 +39,14 @@ const Kudos = styled.div`
   background-repeat: no-repeat;
   height: 100px;
   width: 100px;
-  font-size: xx-large;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
+  span {
+    color: black;
+    padding-bottom: 15px;
+    font-size: x-large;
+  }
 `;
 
 const Blurb = styled.h3`
