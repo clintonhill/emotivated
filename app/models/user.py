@@ -50,3 +50,7 @@ class User(db.Model, UserMixin):
             "sticker_id": self.sticker_id,
             "stickers": [sticker.to_dict() for sticker in self.stickers],
         }
+
+    def add_stickers(self, num):
+        for(i in range(num)):
+            

@@ -58,23 +58,26 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 users = {}
 
+def get_other_user(conversation_id, user_id):
+    conversation = Conversation.query.get(conversation_id)
+    if conversation.responder_id == user_id:
+        other_user = conversation.topic.author_id
+    else:
+        other_user = conversation.responder_id
+
+    return other_user
+
 @socketio.on('client_message')
 def handle_message(data):
     data = json.loads(data)
     content, from_id, conversation_id = data.values()
-    conversation = Conversation.query.get(conversation_id)
 
     message = Message(message=content, sender_id=from_id,
                       conversation_id=conversation_id)
     db.session.add(message)
     db.session.commit()
 
-
-
-    if conversation.responder_id == from_id:
-        other_user = conversation.topic.author_id
-    else:
-        other_user = conversation.responder_id
+    other_user = get_other_user(conversation_id, from_id)
 
     if other_user in users:
         emit('message', {"msg": content, "conversation_id":conversation_id, "is_author": False }, room=users[other_user])
@@ -83,8 +86,19 @@ def handle_message(data):
         users[from_id] = request.sid
 
     emit('message', {"msg": content, "conversation_id":conversation_id, "is_author": True}, room=users[from_id])
-    print('received message: ' + content)
-    print(users)
+
+
+@socketio.on('reward')
+def reward_user(data):
+    data = json.loads(data)
+    user_from, conversation_id = data.values()
+    other_user = get_other_user(conversation_id, user_from)
+
+    user = User.query.get(other_user)
+    user.kudos += 1
+    user.add_stickers(1)
+    db.session.add(user)
+    db.session.commit()
 
 @socketio.on('connection')
 def handle_connect(data):
@@ -92,7 +106,6 @@ def handle_connect(data):
     if user_id not in users or users[user_id] != request.sid:
         users[user_id] = request.sid
         emit('connection_event', users[user_id], broadcast=True)
-        print('User join ' + str(users[user_id]))
 
 if(__name__ == '__main__'):
     socketio.run(app)

@@ -187,7 +187,7 @@ export default function ConversationPage({ forceConversation, setForceConversati
               <h5>{conversations[activeConversation].topic.description}</h5>
             </TopicContainer>}
             {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message key={message.id} message={message} nickname={getNickname(conversations[activeConversation])} />)}
-            {activeConversation && <EndContainer activeConversation={activeConversation} /> }
+            {activeConversation && <EndContainer activeConversation={activeConversation} user={user} socket={socket} /> }
             <div ref={endRef}/>
           </ConversationPane>
           <UserInputArea>

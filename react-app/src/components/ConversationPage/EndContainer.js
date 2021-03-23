@@ -59,8 +59,16 @@ const PublishAfter = styled.div`
   justify-content: space-between;
 `;
 
-export default function EndContainer() {
+export default function EndContainer({activeConversation, socket, user}) {
   const [endState, setEndState] = useState(0)
+ //socket.emit('client_message', JSON.stringify({ content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
+  const rewardPartner = () => {
+    socket.emit('reward', JSON.stringify({
+      user_from: user.id,
+      conversation_id: activeConversation
+    }))
+    console.log('Trying to reward as ' + user.id)
+  }
 
   return (
   <Wrapper>
@@ -73,7 +81,7 @@ export default function EndContainer() {
         <h6>How was this conversation? Clicking the smile will give your chat partner Kudos, and a new sticker.</h6>
         <RatingContainer>
           <RatingButton hexcode={'1F641.svg'} onClick={() => setEndState(2)} />
-          <RatingButton hexcode={'1F642.svg'} onClick={() => setEndState(2)} />
+          <RatingButton hexcode={'1F642.svg'} onClick={rewardPartner} />
         </RatingContainer>
       </DisconnectAfter>}
       {endState === END_STATE_PUBLISH &&
