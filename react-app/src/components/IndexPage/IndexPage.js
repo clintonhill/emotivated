@@ -76,6 +76,9 @@ const SwipeRegionLeft = styled.div.attrs(props => ({
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const SwipeRegionRight = styled.div.attrs(props => ({
@@ -94,6 +97,9 @@ const SwipeRegionRight = styled.div.attrs(props => ({
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const CommentsContainer = styled.div`
@@ -211,8 +217,16 @@ export default function IndexPage({ setForceConversation, authenticated }) {
     history.push(`/conversations`)
   }
 
+
   useEffect(() => {
     getNewTopic();
+    document.addEventListener('keyup', (e) => {
+      if(e.key === 'ArrowRight') {
+        swipeRight();
+      } else if (e.key === 'ArrowLeft') {
+        getNewTopic();
+      }
+    })
   }, [])
 
   useEffect(() => {
@@ -265,6 +279,7 @@ export default function IndexPage({ setForceConversation, authenticated }) {
               onTouchMove={onTouchMove}
               onMouseMove={onMouseMove}
               onMouseUp={onMouseEnd}
+              onClick={getNewTopic}
             />
             <SwipeComponent
               onTouchStart={onTouchStart}
@@ -287,6 +302,7 @@ export default function IndexPage({ setForceConversation, authenticated }) {
               onTouchMove={onTouchMove}
               onMouseMove={onMouseMove}
               onMouseUp={onMouseEnd}
+              onClick={swipeRight}
             />
           </SwipeWrapper>
         </MainComponent>
