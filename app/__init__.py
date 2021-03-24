@@ -91,13 +91,20 @@ def handle_message(data):
 @socketio.on('reward')
 def reward_user(data):
     data = json.loads(data)
-    user_from, conversation_id = data.values()
+    user_from, conversation_id, reward_other, make_public = data.values()
     other_user = get_other_user(conversation_id, user_from)
 
-    user = User.query.get(other_user)
-    user.kudos += 1
-    user.add_stickers(1)
-    db.session.add(user)
+    if reward_other:
+        user = User.query.get(other_user)
+        user.kudos += 1
+        user.add_stickers(1)
+        db.session.add(user)
+
+    #Lock the conversation
+    conversation = Conversation.query.get(conversation_id)
+    conversation.is_closed = True
+    conversation.is_public = make_public
+    db.session.add(conversation)
     db.session.commit()
 
 @socketio.on('connection')

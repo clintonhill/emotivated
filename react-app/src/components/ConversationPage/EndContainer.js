@@ -61,13 +61,15 @@ const PublishAfter = styled.div`
 
 export default function EndContainer({activeConversation, socket, user}) {
   const [endState, setEndState] = useState(0)
+  const [rewardOther, setRewardOther] = useState(false)
  //socket.emit('client_message', JSON.stringify({ content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
-  const rewardPartner = () => {
+  const endChat = (publish=false) => {
     socket.emit('reward', JSON.stringify({
       user_from: user.id,
-      conversation_id: activeConversation
+      conversation_id: activeConversation,
+      reward_other: rewardOther,
+      make_public: publish
     }))
-    console.log('Trying to reward as ' + user.id)
   }
 
   return (
@@ -80,16 +82,22 @@ export default function EndContainer({activeConversation, socket, user}) {
       {endState === END_STATE_GIVE_KUDOS  && <DisconnectAfter>
         <h6>How was this conversation? Clicking the smile will give your chat partner Kudos, and a new sticker.</h6>
         <RatingContainer>
-          <RatingButton hexcode={'1F641.svg'} onClick={() => setEndState(2)} />
-          <RatingButton hexcode={'1F642.svg'} onClick={rewardPartner} />
+          <RatingButton hexcode={'1F641.svg'} onClick={() => {
+            setEndState(2);
+            setRewardOther(false);
+          }} />
+          <RatingButton hexcode={'1F642.svg'} onClick={() => {
+            setEndState(2);
+            setRewardOther(true);
+          }} />
         </RatingContainer>
       </DisconnectAfter>}
       {endState === END_STATE_PUBLISH &&
       <PublishAfter>
         <h6>Do you think this conversation could help others? Click publish! Don't worry, you stay anonymous!</h6>
         <>
-        <button>Publish</button>
-        <button>Not today.</button>
+        <button onClick={ () => endChat(true)}>Publish</button>
+        <button onClick={ () => endChat(false)}>Not today</button>
         </>
       </PublishAfter>}
     </Wrapper>

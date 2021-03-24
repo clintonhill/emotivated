@@ -1,8 +1,10 @@
 from .db import db
+from .sticker import Sticker
 from .user_sticker import user_stickers
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
+from sqlalchemy.sql.expression import func, select
 
 
 class User(db.Model, UserMixin):
@@ -52,5 +54,8 @@ class User(db.Model, UserMixin):
         }
 
     def add_stickers(self, num):
-        for(i in range(num)):
-            
+        self_stickers = [sticker.to_dict()["id"] for sticker in self.stickers]
+
+        for i in range(num):
+            rand_sticker = Sticker.query.filter(~Sticker.id.in_(self_stickers)).order_by(func.random()).first()
+            self.stickers.append(rand_sticker)
