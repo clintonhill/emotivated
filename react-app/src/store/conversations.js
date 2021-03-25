@@ -70,7 +70,9 @@ export const getPublishedPage = (page) => async dispatch => {
     const conversations = await response.json();
     dispatch(setPublishedConversations(conversations))
     console.log(conversations)
+    return true;
   }
+  return false;
 }
 
 const conversationReducer = (state = {}, action) => {

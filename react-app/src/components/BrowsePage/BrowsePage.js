@@ -23,6 +23,7 @@ const Navigation = styled.div`
 export default function BrowsePage() {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
+  const [activeVisibilitySensor, setActiveVisibilitySensor] = useState(false)
   const conversations = useSelector(state => state.conversations.published)
 
   const nextPage = () => {
@@ -49,7 +50,7 @@ export default function BrowsePage() {
         <Topics>
           {conversations && Object.values(conversations).map(conv => <TopicRow topic={conv}/>)}
 
-          <VisibilitySensor onChange={onChange}>
+          <VisibilitySensor delayedCall={true} onChange={onChange}>
             <div>.</div>
           </VisibilitySensor>
         </Topics>
