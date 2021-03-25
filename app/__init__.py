@@ -100,12 +100,18 @@ def reward_user(data):
         user.add_stickers(1)
         db.session.add(user)
 
-    #Lock the conversation
+    # Lock the conversation
     conversation = Conversation.query.get(conversation_id)
     conversation.is_closed = True
     conversation.is_public = make_public
     db.session.add(conversation)
     db.session.commit()
+
+    # Emit the locked message to both parties.
+    if other_user in users:
+        emit('conversation_end', conversation_id, room=users[other_user])
+    if user_from in users:
+        emit('conversation_end', conversation_id, room=users[user_from])
 
 @socketio.on('connection')
 def handle_connect(data):

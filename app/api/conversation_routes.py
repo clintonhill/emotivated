@@ -38,8 +38,11 @@ def create_conversation(topic_id):
     db.session.commit()
     return conversation.to_dict(current_user)
 
+
 @conversation_routes.route('/page/<int:page>')
 def getPublishedPage(page):
-  conversations = Conversation.query.filter(Conversation.is_public == True).paginate(page, 10, False)
-  items = conversations.items
-  return {"conversations": [conversation.to_published_dict() for conversation in items]}
+    conversations = Conversation.query.filter(Conversation.is_public == True).paginate(page, 10, False)
+    items = conversations.items
+    return {
+        "conversations":
+        [conversation.to_published_dict() for conversation in items]}

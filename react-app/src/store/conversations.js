@@ -18,14 +18,14 @@ export const setPublishedConversations = (conversations) => {
   }
 }
 
-const setOneConversationMessages = (conversation) => {
+export const setOneConversationMessages = (conversation) => {
   return {
     type: SET_ONE_CONVERSATION_MESSAGES,
     payload: conversation
   }
 }
 
-const setOneConversation = conversation => {
+export const setOneConversation = conversation => {
   return {
     type: SET_ONE_CONVERSATION,
     payload: conversation

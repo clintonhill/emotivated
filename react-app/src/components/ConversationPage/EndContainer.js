@@ -59,7 +59,7 @@ const PublishAfter = styled.div`
   justify-content: space-between;
 `;
 
-export default function EndContainer({activeConversation, socket, user}) {
+export default function EndContainer({activeConversation, socket, user, chatDisabled}) {
   const [endState, setEndState] = useState(0)
   const [rewardOther, setRewardOther] = useState(false)
  //socket.emit('client_message', JSON.stringify({ content: currentMessage, user_from: user.id, conversation_id: activeConversation }))
@@ -71,7 +71,9 @@ export default function EndContainer({activeConversation, socket, user}) {
       make_public: publish
     }))
   }
-
+  if(chatDisabled){
+    return <Wrapper>This conversation has been concluded.</Wrapper>
+  }
   return (
   <Wrapper>
       {endState === END_STATE_NONE &&
