@@ -2,11 +2,19 @@ const SET_CONVERSATIONS = 'conversations/SET_CONVERSATIONS'
 const SET_ONE_CONVERSATION = 'conversations/SET_ONE_CONVERSATION'
 const SET_ONE_CONVERSATION_MESSAGES = 'conversations/SET_ONE_CONVERSATION_MESSAGES'
 const ADD_MESSAGE_TO_CONVERSATION = 'conversations/ADD_MESSAGE_TO_CONVERSATION'
+const SET_PUBLISHED_CONVERSATIONS = 'conversations/SET_PUBLISHED_CONVERSATIONS'
 
 export const setConversations = (users) => {
   return {
       type: SET_CONVERSATIONS,
       payload: users
+  }
+}
+
+export const setPublishedConversations = (conversations) => {
+  return {
+    type: SET_PUBLISHED_CONVERSATIONS,
+    payload: conversations
   }
 }
 
@@ -56,6 +64,15 @@ export const makeConversationConnection = (topicId) => async(dispatch) => {
   }
 }
 
+export const getPublishedPage = (page) => async dispatch => {
+  const response = await fetch(`/api/conversations/page/${page}`)
+  if(response.ok) {
+    const conversations = await response.json();
+    dispatch(setPublishedConversations(conversations))
+    console.log(conversations)
+  }
+}
+
 const conversationReducer = (state = {}, action) => {
   let newState = {...state};
   switch (action.type){
@@ -71,10 +88,17 @@ const conversationReducer = (state = {}, action) => {
         newState.messages = {...newState.messages, ...action.payload };
         return newState;
       case ADD_MESSAGE_TO_CONVERSATION:
-        console.log(action.payload)
         const newMessages = {...state.messages }
         newMessages[action.payload.conversation_id] = [...newMessages[action.payload.conversation_id], action.payload]
         newState.messages = newMessages;
+        return newState;
+      case SET_PUBLISHED_CONVERSATIONS:
+        if(!newState.published) {
+          newState.published = {}
+        }
+        for(let conversation of action.payload['conversations']) {
+          newState[conversation.id] = conversation
+        }
         return newState;
       default:
         return state;
