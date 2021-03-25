@@ -40,6 +40,6 @@ def create_conversation(topic_id):
 
 @conversation_routes.route('/page/<int:page>')
 def getPublishedPage(page):
-  conversations = Conversation.query.paginate(page, 10, False)
+  conversations = Conversation.query.filter(Conversation.is_public == True).paginate(page, 10, False)
   items = conversations.items
   return {"conversations": [conversation.to_published_dict() for conversation in items]}
