@@ -53,6 +53,7 @@ const ConversationPane = styled.div`
   background-color: rgba(255, 255, 255, 0.335);
   overflow: scroll;
   overflow-x: hidden;
+  border-radius: 10px;
 `;
 
 const TopicContainer = styled.div`
