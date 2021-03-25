@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useHistory } from  'react-router-dom'
 
 const TopicWrapper = styled.div`
   width: 98%;
@@ -51,9 +52,12 @@ const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do e
 `
 
 export default function TopicRow({topic}) {
+  const history = useHistory();
+
   if(!topic || !topic.topic) return null;
   return (
-    <TopicWrapper>
+    <TopicWrapper
+    onClick={() => history.push(`/view/${topic.id}`)}>
       <h5>{truncateText(topic.topic.name, 200)}</h5>
       <h6>{truncateText(topic.topic.description, 250)}</h6>
       <UsersDiv>

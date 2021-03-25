@@ -26,6 +26,13 @@ def getMessages(id):
     return {id: [message.to_dict(current_user) for message in messages]}
 
 
+@conversation_routes.route('/published/<int:id>')
+@login_required
+def getPublishedMessages(id):
+    messages = Message.query.filter_by(conversation_id=id).all()
+    return {id: [message.to_published_dict() for message in messages]}
+
+
 @conversation_routes.route('/new/<int:topic_id>')
 @login_required
 def create_conversation(topic_id):

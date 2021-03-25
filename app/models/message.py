@@ -25,3 +25,13 @@ class Message(db.Model):
             "is_edited": self.is_edited,
             "current_is_author": current_user.id == self.sender_id
         }
+
+    def to_published_dict(self):
+        return {
+            "id": self.id,
+            "message": self.message,
+            "conversation_id": self.conversation_id,
+            "timestamp": self.timestamp,
+            "is_edited": self.is_edited,
+            "from_topic_author": self.conversation.responder_id == self.sender_id
+        }

@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import {MainComponent, PageWrapper} from '../styles'
 import { useEffect } from 'react'
-import { getConversationMessages } from '../../store/conversations'
-import Message from '../ConversationPage/Message'
+import { getPublishedConversationMessages } from '../../store/conversations'
+import  {PublishedMessage} from '../ConversationPage/Message'
 
 const Chat = styled.div`
   width: 90%;
@@ -16,7 +16,7 @@ const Chat = styled.div`
   justify-content: flex-start;
   align-items: center;
   padding: 5px;
-  margin-top: 30px;
+  /* margin-top: 30px; */
   box-sizing: border-box;
 `;
 
@@ -35,25 +35,25 @@ const TopicContainer = styled.div`
 
 export default function PublishedConversation() {
   const {conversationId} = useParams();
-  const messages = useSelector(state => state.conversations.messages)
+  const messages = useSelector(state => state.conversations.published_messages)
   const dispatch = useDispatch();
 
   useEffect(() => {;
-    dispatch(getConversationMessages(conversationId))
+    dispatch(getPublishedConversationMessages(conversationId))
   }, [dispatch])
 
-  const getNickname = (conversation) => {
-    if (conversation.current_is_author) {
-      return conversation.topic.author_nickname;
+  const getNickname = (message) => {
+    if (message.from_topic_author) {
+      return "Author"
     }
-    return conversation.responder_nickname;
+    return "Responder"
   }
 
   return (
   <PageWrapper>
     <MainComponent>
       <Chat>
-        Bobby & Joe
+        Viewing Published Conversation
         <ConversationPane>
         {/* {conversations && conversations[conversationId] && <TopicContainer>
               <h3>{conversations[conversationId].topic.name}</h3>
@@ -61,7 +61,7 @@ export default function PublishedConversation() {
             </TopicContainer>} */}
            {messages && messages[conversationId] &&
             messages[conversationId].map(message =>
-            <Message key={message.id} message={message} nickname={"Mike"} />)}
+            <PublishedMessage key={message.id} message={message} nickname={()=>getNickname(message)} isPublished={true}/>)}
         </ConversationPane>
       </Chat>
     </MainComponent>

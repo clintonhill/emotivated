@@ -23,7 +23,6 @@ const Navigation = styled.div`
 export default function BrowsePage() {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const [activeVisibilitySensor, setActiveVisibilitySensor] = useState(false)
   const conversations = useSelector(state => state.conversations.published)
 
   const nextPage = () => {
