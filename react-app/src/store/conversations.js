@@ -97,7 +97,7 @@ const conversationReducer = (state = {}, action) => {
           newState.published = {}
         }
         for(let conversation of action.payload['conversations']) {
-          newState[conversation.id] = conversation
+          newState.published[conversation.id] = conversation
         }
         return newState;
       default:

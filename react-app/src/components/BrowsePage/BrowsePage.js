@@ -23,7 +23,7 @@ const Navigation = styled.div`
 export default function BrowsePage() {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const published = useSelector(state => state.conversations)
+  const conversations = useSelector(state => state.conversations.published)
 
   const nextPage = () => {
     setPage((prev) => prev + 1);
@@ -47,7 +47,7 @@ export default function BrowsePage() {
     <PageWrapper>
       <MainComponent>
         <Topics>
-          {Object.values(published).map(conv => <TopicRow topic={conv}/>)}
+          {conversations && Object.values(conversations).map(conv => <TopicRow topic={conv}/>)}
 
           <VisibilitySensor onChange={onChange}>
             <div>.</div>

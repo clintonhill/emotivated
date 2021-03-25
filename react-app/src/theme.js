@@ -6,6 +6,8 @@ export const mainTheme = {
   backgroundColor: '#D8E4FF',
   logoPath: `${IMAGE_FOLDER}/emotivated.svg`,
   toggleHex: '1F319',
+  secondaryBackground: '#E8BA71',
+  tertiaryBackground: '#ca9642'
 }
 
 export const darkTheme = {
@@ -14,4 +16,6 @@ export const darkTheme = {
   backgroundColor: '#242325',
   logoPath: `${IMAGE_FOLDER}/emotivated.svg`,
   toggleHex: '2600',
+  secondaryBackground: '#35322c',
+  tertiaryBackground: '#40372a'
 }

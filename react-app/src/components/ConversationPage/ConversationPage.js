@@ -37,7 +37,7 @@ const ChatList = styled.div`
 const Chat = styled.div`
   width: 80%;
   height: 100%;
-  background-color: ${props => props.theme.accent};
+  background-color: ${props => props.theme.tertiaryBackground};
   border-radius: 10px 10px 0 0;
   display:flex;
   flex-direction: column;

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 const TopicWrapper = styled.div`
   width: 98%;
   height: 20%;
-  background-color: ${props => props.theme.accent};
+  background-color: ${props => props.theme.tertiaryBackground};
   margin: 5px;
   margin-left: 10px;
   display: flex;
@@ -55,7 +55,7 @@ export default function TopicRow({topic}) {
   return (
     <TopicWrapper>
       <h5>{truncateText(topic.topic.name, 200)}</h5>
-      <h6>{truncateText(lorem, 250)}</h6>
+      <h6>{truncateText(topic.topic.description, 250)}</h6>
       <UsersDiv>
         <span>{topic.topic.author_nickname}</span>
         <span>{topic.responder_nickname}</span>
