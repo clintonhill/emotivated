@@ -24,3 +24,10 @@ class Conversation(db.Model):
             "responder_nickname": self.responder_nickname,
             "current_is_author": current_user.id == self.responder_id
         }
+
+    def to_published_dict(self):
+        return {
+            "id": self.id,
+            "topic": self.topic.to_published_dict(),
+            "responder_nickname": self.responder_nickname,
+        }

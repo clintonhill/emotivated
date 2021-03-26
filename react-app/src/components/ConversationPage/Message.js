@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   display: grid;
 `;
 const UserName = styled.span`
-  justify-self: ${props => props.user === 'You' ? 'end' : 'start'};
+  justify-self: ${props => props.user === 'Responder' ? 'end' : 'start'};
 `;
 const TextContainer = styled.div`
   background-color: ${props => props.theme.backgroundColor};
@@ -15,12 +15,35 @@ const TextContainer = styled.div`
   padding: 2px;
   border: 2px black solid;
   width: 48%;
-  justify-self: ${props => props.user === 'You' ? 'end' : 'start'};
-  border-radius: ${props => props.user === 'You' ? '10px 0 0 10px' : '0 10px 10px 0'};
+  justify-self: ${props => props.user === 'Responder' ? 'end' : 'start'};
+  border-radius: ${props => props.user === 'Responder' ? '10px 0 0 10px' : '0 10px 10px 0'};
   transition: all .5s ease;
 `;
 
-export default function Message({message}, {nickname}) {
+export function PublishedMessage({message, nickname}) {
+
+
+  const user = message => {
+    if (message.from_topic_author)
+      return 'Author';
+    else
+      return 'Responder'
+
+    return 'Unknown'
+  }
+  const current = user(message)
+
+  return(
+    <Wrapper>
+      <UserName user={current}>{ current }</UserName>
+      <TextContainer user={current}>
+        {message.message}
+      </TextContainer>
+    </Wrapper>
+  )
+}
+
+export default function Message({message, nickname}) {
 
   const conversations = useSelector(state => state.conversations?.conversations)
 

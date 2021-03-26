@@ -7,6 +7,7 @@ const Wrapper = styled.div`
 
 const TextContainer = styled.div`
   color: ${props => props.theme.primaryText};
+  background-color: ${props => props.isClosed ? props.theme.tertiaryBackground : ''};
   width: 100%;
   transition: all .5s ease;
   margin-top: 10px;
@@ -18,10 +19,10 @@ const TextContainer = styled.div`
   }
 `;
 
-export default function User({user, id, setActiveConversation}) {
+export default function User({user, id, setActiveConversation, isClosed}) {
   return(
     <Wrapper onClick={()=> setActiveConversation(id)}>
-      <TextContainer>
+      <TextContainer isClosed={isClosed}>
         {user}
       </TextContainer>
     </Wrapper>

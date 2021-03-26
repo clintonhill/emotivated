@@ -76,6 +76,9 @@ const SwipeRegionLeft = styled.div.attrs(props => ({
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const SwipeRegionRight = styled.div.attrs(props => ({
@@ -94,6 +97,9 @@ const SwipeRegionRight = styled.div.attrs(props => ({
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const CommentsContainer = styled.div`
@@ -133,6 +139,14 @@ const slides = {
   2: {
     image: `https://i.gyazo.com/4a41bc76a0daed86cc873a5ee2b109c5.png`,
     text: `After a successful discussion, the topic creator can reward their conversation partner for being positive.`
+  },
+  3: {
+    image: 'https://i.gyazo.com/07c552ec1b0f6597420d83c7a911e771.png',
+    text: 'Users are rewarded "Kudos" for positive experiences.',
+  },
+  4: {
+    image: 'https://i.gyazo.com/135f0a6124189b09c82e9c25e1804935.png',
+    text: 'Collect thousands of stickers for helping others!'
   }
 }
 
@@ -203,13 +217,21 @@ export default function IndexPage({ setForceConversation, authenticated }) {
     history.push(`/conversations`)
   }
 
+
   useEffect(() => {
     getNewTopic();
+    document.addEventListener('keyup', (e) => {
+      if(e.key === 'ArrowRight') {
+        swipeRight();
+      } else if (e.key === 'ArrowLeft') {
+        getNewTopic();
+      }
+    })
   }, [])
 
   useEffect(() => {
       const timeout = setTimeout(() => {
-         setSlide(prev => prev < 2 ? prev + 1 : 0);
+         setSlide(prev => prev < Object.keys(slides).length-1 ? prev + 1 : 0);
        }, 5000);
 
       return () => clearTimeout(timeout);
@@ -257,6 +279,7 @@ export default function IndexPage({ setForceConversation, authenticated }) {
               onTouchMove={onTouchMove}
               onMouseMove={onMouseMove}
               onMouseUp={onMouseEnd}
+              onClick={getNewTopic}
             />
             <SwipeComponent
               onTouchStart={onTouchStart}
@@ -279,6 +302,7 @@ export default function IndexPage({ setForceConversation, authenticated }) {
               onTouchMove={onTouchMove}
               onMouseMove={onMouseMove}
               onMouseUp={onMouseEnd}
+              onClick={swipeRight}
             />
           </SwipeWrapper>
         </MainComponent>

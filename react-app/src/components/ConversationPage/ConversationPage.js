@@ -6,7 +6,7 @@ import { PageWrapper } from '../styles'
 import { io } from 'socket.io-client'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getChatPartners, getConversationMessages, addMessageToConversation } from '../../store/conversations';
+import { getChatPartners, getConversationMessages, addMessageToConversation, setOneConversation } from '../../store/conversations';
 
 const STICKER_FOLDER = process.env.NODE_ENV === 'production' ? '/static' : '/stickers'
 
@@ -37,7 +37,7 @@ const ChatList = styled.div`
 const Chat = styled.div`
   width: 80%;
   height: 100%;
-  background-color: ${props => props.theme.accent};
+  background-color: ${props => props.theme.tertiaryBackground};
   border-radius: 10px 10px 0 0;
   display:flex;
   flex-direction: column;
@@ -53,6 +53,7 @@ const ConversationPane = styled.div`
   background-color: rgba(255, 255, 255, 0.335);
   overflow: scroll;
   overflow-x: hidden;
+  border-radius: 10px;
 `;
 
 const TopicContainer = styled.div`
@@ -72,6 +73,10 @@ const ChatInput = styled.textarea`
   margin-top: 5px;
   border-radius: 10px;
   padding: 3px;
+  z-index: 2;
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 
@@ -91,6 +96,10 @@ const SendButton = styled.button`
   &:hover {
     cursor: pointer;
   }
+  &:disabled {
+    cursor: not-allowed;
+    background-color: ${props => props.theme.secondaryBackground};
+  }
 `;
 
 let socket;
@@ -105,6 +114,7 @@ const establishSocket = () => {
 export default function ConversationPage({ forceConversation, setForceConversation }) {
   const [currentMessage, setCurrentMessage] = useState('');
   const [activeConversation, setActiveConversation] = useState(null);
+  const [chatDisabled, setChatDisabled] = useState(false)
   const endRef = useRef(null);
 
   const user = useSelector(state => state.session);
@@ -139,6 +149,13 @@ export default function ConversationPage({ forceConversation, setForceConversati
       dispatch(addMessageToConversation(payload));
     })
     socket.on('connection_event', (msg) => console.log(`Connected as ${msg}`))
+    socket.on('conversation_end', (conversationId) => {
+      // console.log('Trying to close conversation ' + conversationId)
+      // let newState = {...conversations[conversationId]}
+      // newState.is_closed = true;
+      // dispatch(setOneConversation(newState))
+      dispatch(getChatPartners(user.id));
+    })
   }, [dispatch])
 
   //Get users that the current user is in conversations with.
@@ -161,6 +178,17 @@ export default function ConversationPage({ forceConversation, setForceConversati
     socket.emit('connection', user.id)
   }, [dispatch, activeConversation, user.id])
 
+  //Check if the chat is disabled
+  useEffect(() => {
+    if(conversations && activeConversation) {
+      if(conversations[activeConversation].is_closed === true) {
+        setChatDisabled(true)
+      } else {
+        setChatDisabled(false)
+      }
+    }
+  }, [activeConversation, conversations])
+
   const getNickname = (conversation) => {
     if (conversation.current_is_author) {
       return conversation.topic.author_nickname;
@@ -177,6 +205,7 @@ export default function ConversationPage({ forceConversation, setForceConversati
             id={conversation.id}
             setActiveConversation={setActiveConversation}
             key={conversation.id}
+            isClosed={conversation.is_closed}
           />)}
         </ChatList>
         <Chat>
@@ -187,16 +216,16 @@ export default function ConversationPage({ forceConversation, setForceConversati
               <h5>{conversations[activeConversation].topic.description}</h5>
             </TopicContainer>}
             {messages && messages[activeConversation] && messages[activeConversation].map(message => <Message key={message.id} message={message} nickname={getNickname(conversations[activeConversation])} />)}
-            {activeConversation && <EndContainer activeConversation={activeConversation} /> }
+            {activeConversation && <EndContainer activeConversation={activeConversation} user={user} socket={socket} chatDisabled={chatDisabled}/> }
             <div ref={endRef}/>
           </ConversationPane>
           <UserInputArea>
             <ChatInput
               value={currentMessage}
               onChange={(e) => setCurrentMessage(e.target.value)}
-              disabled={!activeConversation}
+              disabled={!activeConversation || chatDisabled}
             />
-            <SendButton disabled={!activeConversation} onClick={onSend} />
+            <SendButton disabled={!activeConversation || chatDisabled} onClick={onSend} />
           </UserInputArea>
         </Chat>
       </ChatComponent>

@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import ProfilePage from "./components/ProfilePage";
 import BrowsePage from "./components/BrowsePage";
 import Footer from "./components/Footer";
+import PublishedConversation from "./components/PublishedConversation";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -107,6 +108,9 @@ function App() {
         </ProtectedRoute>
         <ProtectedRoute path='/browse' exact authenticated={authenticated}>
           <BrowsePage />
+        </ProtectedRoute>
+        <ProtectedRoute path='/view/:conversationId' exact={true} authenticated={authenticated}>
+          <PublishedConversation />
         </ProtectedRoute>
         <Route path="/" exact={true}>
           <IndexPage setForceConversation={setForceConversation} authenticated={authenticated}/>

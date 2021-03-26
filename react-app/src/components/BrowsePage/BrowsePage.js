@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import VisibilitySensor from 'react-visibility-sensor'
 import { MainComponent, PageWrapper } from '../styles'
 import TopicRow from './TopicRow'
-import {getTopicsPage} from '../../store/topics'
+import {getPublishedPage} from '../../store/conversations'
 
 const Topics = styled.div`
     width: 100%;
@@ -23,14 +23,14 @@ const Navigation = styled.div`
 export default function BrowsePage() {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const topics = useSelector(state => state.topics)
+  const conversations = useSelector(state => state.conversations.published)
 
   const nextPage = () => {
     setPage((prev) => prev + 1);
   }
 
-  const fetchTopicPage = (page) => {
-    dispatch(getTopicsPage(page))
+  const fetchConversationsPage = (page) => {
+    dispatch(getPublishedPage(page))
   }
 
   function onChange(isVisible) {
@@ -40,16 +40,16 @@ export default function BrowsePage() {
   }
 
   useEffect(() => {
-    fetchTopicPage(page)
+    fetchConversationsPage(page)
   }, [page])
 
   return (
     <PageWrapper>
       <MainComponent>
         <Topics>
-          {Object.values(topics).map(topic => <TopicRow topic={topic}/>)}
+          {conversations && Object.values(conversations).map(conv => <TopicRow topic={conv}/>)}
 
-          <VisibilitySensor onChange={onChange}>
+          <VisibilitySensor delayedCall={true} onChange={onChange}>
             <div>.</div>
           </VisibilitySensor>
         </Topics>
