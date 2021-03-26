@@ -16,7 +16,7 @@ class Topic(db.Model):
 
     author = db.relationship('User')
 
-    def to_dict(self, current_user):
+    def to_dict(self, current_user, count):
         return {
             "id": self.id,
             "name": self.name,
@@ -24,7 +24,8 @@ class Topic(db.Model):
             "date_added": self.date_added,
             "is_resolved": self.is_resolved,
             "author_nickname": self.author_nickname,
-            "current_is_author": current_user.id == self.author_id
+            "current_is_author": current_user.id == self.author_id,
+            "count": count
         }
 
     def to_published_dict(self):

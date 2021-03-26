@@ -112,8 +112,8 @@ const CommentsContainer = styled.div`
 
 const CommentImage = styled.div`
     background-image: url("${process.env.PUBLIC_URL}${STICKER_FOLDER}/E248.svg");
-    height: 100%;
-    width: 100%;
+    height: 100px;
+    width: 100px;
     background-position: center;
     background-repeat: no-repeat;
 `;
@@ -294,7 +294,7 @@ export default function IndexPage({ setForceConversation, authenticated }) {
               {topic && <h5>{topicState[topic].description}</h5>}
               <CommentsContainer>
                 <CommentImage />
-                <h6>{example.comments}</h6>
+                <h6>{topic && topicState[topic].count}</h6>
               </CommentsContainer>
             </SwipeComponent>
             <SwipeRegionRight fill={determineFill(true)}
