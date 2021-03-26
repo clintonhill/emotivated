@@ -19,8 +19,9 @@ def seed_conversations():
       author = topic.author_id
       for j in range(1, fake.random_int(min=1, max=10)):
         responder = random_user(author)
-        conversation = Conversation(topic_id=i, responder_id=responder, is_public=False,
-                                    is_closed=False, responder_nickname=get_random_name())
+        random_complete = fake.random_int(min=1, max=6) == 6
+        conversation = Conversation(topic_id=i, responder_id=responder, is_public=random_complete,
+                                    is_closed=random_complete, responder_nickname=get_random_name())
 
         db.session.add(conversation)
 
